@@ -1,0 +1,27 @@
+{
+  "name": "wa-bot",
+  "version": "1.0.0",
+  "description": "whatsapp bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dhino12/wa-bot.git"
+  },
+  "keywords": [
+    "wa-bot"
+  ],
+  "author": "dhino12",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dhino12/wa-bot/issues"
+  },
+  "homepage": "https://github.com/Dhino12/wa-bot#readme",
+  "dependencies": {
+    "@open-wa/wa-automate": "^4.20.6",
+    "nodemon": "^2.0.12"
+  }
+}
