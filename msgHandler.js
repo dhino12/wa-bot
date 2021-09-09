@@ -102,35 +102,27 @@ const msgHandler = async (client, message) => {
             console.log(mimetype);
             const md = await decryptMedia(message, useragentOverride);
             const pathTmpVideo = `./media/tmp/video/animated.${mimetype.split('/')[1]}`;
-            const pathTmpGif = './media/tmp/video/animation.gif'
+            const pathTmpGif = './media/gif/animation.gif';
             await writeFile(pathTmpVideo, md, () => {});
 
             try {
-                const process = new ffmpeg('./media/tmp/video/animated.mp4');
-                process.then(function (video) {
-
-                    video
-                        .setVideoSize('640x?', true, true)
-                        .save('./media/tmp/video/animation.gif', function (error, file) {
-                            if (!error)
-                                console.log('Video file: ' + file);
-                            else console.log('ERROR : ' + error);
-                        });
-                    
-                }, function (err) {
-                    console.log('Error: ' + err);
+                const Process = await new ffmpeg('./media/tmp/video/animated.mp4');
+                const videoSize = await Process.setVideoSize('640x?', true, true);
+                await videoSize.save('./media/gif/animation.gif', async (error, file) => {
+                    if (!error) {
+                        console.log('Video file: ' + file);
+                    } else console.log('ERROR : ' + error);
                 });
-                // const Input = await process();
-                // const videoSize = await Input.setVideoSize('640x?', true, true).save;
-                // const save = 
+
             } catch (error) {
                 console.log(`ERROR CODE :  ${error.code}`);
                 console.log(`ERROR MSG : ${error.msg}`);
             }
 
-            // const gif = readFileSync(pathTmpGif, {encoding: 'base64'});
-            // const imgBase64 = `data:image/gif;base64,${gif.toString('base64')}`;
-            // await client.sendImageAsSticker(from, imgBase64);
+            const gif = await readFileSync(pathTmpGif, {
+                encoding: "base64"
+            });
+            await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`);
 
             break;
     }
