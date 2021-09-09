@@ -7,7 +7,6 @@ const {
     RemoveBgResult
 } = require('remove.bg');
 
-const gm = require('gm');
 const ffmpeg = require('ffmpeg');
 
 const {
