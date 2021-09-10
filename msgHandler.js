@@ -98,6 +98,7 @@ const msgHandler = async (client, message) => {
             break;
 
         case '/stiker-gif':
+            console.log(message);
             console.log(mimetype);
             const md = await decryptMedia(message, useragentOverride);
             const pathTmpVideo = `./media/tmp/video/animated.${mimetype.split('/')[1]}`;

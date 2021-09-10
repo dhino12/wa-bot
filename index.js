@@ -10,17 +10,9 @@ wa.create({
     cacheEnabled: false,
     useChrome: true,
     killProcessOnBrowserClose: true,
-    throwErrorOnTosBlock: false,
-    chromiumArgs: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--aggressive-cache-discard',
-        '--disable-cache',
-        '--disable-application-cache',
-        '--disable-offline-load-stale-cache',
-        '--disk-cache-size=0'
-    ]
-}).then(client => start(client));
+    throwErrorOnTosBlock: false
+}).then(client => start(client))
+.catch(error => console.error(error));
 
 function start(client) {
     client.onMessage(async message => {
