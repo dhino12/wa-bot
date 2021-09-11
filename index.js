@@ -1,7 +1,15 @@
-const wa = require('@open-wa/wa-automate');
+const { create, ev } = require('@open-wa/wa-automate');
 const { msgHandler } = require('./msgHandler');
+const fs = require('fs');
+const app = require('express')();
 
-wa.create({
+
+ev.on('qr.**', async (qrcode, sessionId) => {
+    const bufferImg = Buffer.from(qrcode.replace('data:image/png;base64', ''), 'base64');
+    fs.writeFileSync(`qr_code${sessionId? '_' + sessionId:''}.png`, bufferImg);
+})
+
+create({
     sessionId: 'wa-bot',
     headless: true,
     qrTimeout: 0,
@@ -10,8 +18,14 @@ wa.create({
     cacheEnabled: false,
     useChrome: true,
     killProcessOnBrowserClose: true,
-    throwErrorOnTosBlock: false
-}).then(client => start(client))
+    throwErrorOnTosBlock: false,
+    popup: 3012,
+    defaultViewport: null,
+}).then(client => {
+    app.listen((PORT) => console.log(`Listening on PORT ${PORT}`))
+    start(client)
+
+})
 .catch(error => console.error(error));
 
 function start(client) {
