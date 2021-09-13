@@ -1,12 +1,23 @@
 const { create, ev } = require('@open-wa/wa-automate');
-const { msgHandler } = require('./msgHandler');
+const { msgHandler } = require('./src/script/msgHandler');
 const fs = require('fs');
-const app = require('express')();
-const PORT = 
+const express = require('express');
+const server = express();
+
+const PORT = process.env.PORT || 8000
+
+server.use(express.json())
 
 ev.on('qr.**', async (qrcode, sessionId) => {
     const bufferImg = Buffer.from(qrcode.replace('data:image/png;base64', ''), 'base64');
     fs.writeFileSync(`qr_code${sessionId? '_' + sessionId:''}.png`, bufferImg);
+})
+
+server.use('/', (req, res) => {
+    res.status(200).json({
+        status: true,
+        message: 'Hello World'
+    })
 })
 
 create({
