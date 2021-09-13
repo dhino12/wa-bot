@@ -22,7 +22,7 @@ server.use('/', (req, res) => {
 
 create({
     sessionId: 'wa-bot',
-    headless: true,
+    headless: false,
     qrTimeout: 0,
     authTimeout: 0,
     restartOnCrash: start,
