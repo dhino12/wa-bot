@@ -4,7 +4,7 @@
   "description": "whatsapp bot",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./src/script/index.js"
   },
   "repository": {
     "type": "git",

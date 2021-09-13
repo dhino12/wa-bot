@@ -2,7 +2,7 @@ const { create, ev } = require('@open-wa/wa-automate');
 const { msgHandler } = require('./msgHandler');
 const fs = require('fs');
 const app = require('express')();
-
+const PORT = 
 
 ev.on('qr.**', async (qrcode, sessionId) => {
     const bufferImg = Buffer.from(qrcode.replace('data:image/png;base64', ''), 'base64');
@@ -19,7 +19,7 @@ create({
     useChrome: true,
     killProcessOnBrowserClose: true,
     throwErrorOnTosBlock: false,
-    popup: 3012,
+    popup: process.env.PORT || 8000,
     defaultViewport: null,
 }).then(client => {
     app.listen((PORT) => console.log(`Listening on PORT ${PORT}`))
@@ -29,6 +29,8 @@ create({
 .catch(error => console.error(error));
 
 function start(client) {
+    app.listen((PORT) => console.log(`Running on PORT ${PORT}`));
+
     client.onMessage(async message => {
         msgHandler(client, message);
     });
