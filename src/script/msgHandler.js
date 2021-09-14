@@ -43,7 +43,7 @@ const msgHandler = async (client, message) => {
 
     switch (command) {
         case '/hi':
-            await client.sendText(from, '👋 Hello!');
+            await client.sendMessage(from, '👋 Hello!');
             break;
 
         case '/wa-ver':
