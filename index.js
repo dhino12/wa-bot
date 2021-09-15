@@ -1,6 +1,6 @@
-const { Client, MessageTypes } = require('whatsapp-web.js');
+const { Client } = require('whatsapp-web.js');
 const { sendStickerFromUrl, sendImageAsSticker } = require('./src/script/item/send-sticker');
-// const { msgHandler } = require('./msgHandler');
+const { msgHandler } = require('./src/script/msgHandler');
 const qrCode = require('qrcode-terminal');
 const fs = require('fs');
 const app = require('express')();
@@ -34,10 +34,7 @@ client.on('ready', () => {
 })
 
 client.on(`message`, message => {
-    console.log(message);
-    // sendStickerFromUrl(client, message);
-    // msgHandler(client, message);
-    sendImageAsSticker(message, client);
+    msgHandler(client, message);
 })
 
 client.initialize(); 
