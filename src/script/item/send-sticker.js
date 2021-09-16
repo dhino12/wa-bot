@@ -7,9 +7,12 @@ async function sendStickerFromUrl(client, message){
 }
 
 async function sendStickerFromLocal(message){
+    const media = await message.downloadMedia();
+    console.log(`media : ${media.mimetype}`);
     const chat = await message.getChat();
-    const media = await MessageMedia.fromUrl('https://p4.wallpaperbetter.com/wallpaper/801/429/239/anime-girls-genshin-impact-hutao-genshin-impact-winking-hd-wallpaper-preview.jpg')
-    chat.sendMessage(media);
+    const stickerMedia = MessageMedia.fromFilePath('./media/gif/siesta.webp');
+    console.log(`sticker media : ${stickerMedia.mimetype}`);
+    chat.sendMessage(stickerMedia, {sendMediaAsSticker: true})
 }
 
 async function sendImageAsSticker(message, client) {
