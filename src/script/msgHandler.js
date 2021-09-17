@@ -146,13 +146,13 @@ const msgHandler = async (client, message) => {
 
             break;
 
-        case '/info-battery':
-            await client.sendMessage(from, await getBatteryStatus(info));
+        // case '/info-battery':
+        //     const i = await message.getContact()
+        //     console.log(i);
+        //     await client.sendMessage(from, await getBatteryStatus(info));
         
-        case '/info': 
-            await client.sendMessage(from, await getStatusPhone(info));
-            
-        
+        // case '/info': 
+        //     await client.sendMessage(from, await getStatusPhone(info));
     }
 }
 
