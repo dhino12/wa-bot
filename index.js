@@ -1,5 +1,9 @@
-const { Client } = require('whatsapp-web.js');
-const { msgHandler } = require('./src/script/msgHandler');
+const {
+    Client
+} = require('whatsapp-web.js');
+const {
+    msgHandler
+} = require('./src/script/msgHandler');
 const qrCode = require('qrcode');
 const socketIO = require('socket.io');
 const fs = require('fs');
@@ -8,7 +12,8 @@ const express = require('express');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server)
+const io = socketIO(server);
+const port = process.env.PORT || 8000;
 
 const SESSION_FILE_PATH = './wa-session.json';
 let sessionCfg;
@@ -17,9 +22,9 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionCfg = require(SESSION_FILE_PATH);
 }
 
-const client = new Client({ 
-    puppeteer: { 
-        headless: true ,
+const client = new Client({
+    puppeteer: {
+        headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -30,20 +35,22 @@ const client = new Client({
             '--single-process', // <- this one doesn't works in Windows
             '--disable-gpu'
         ],
-        
-    }, 
-    session: sessionCfg 
+
+    },
+    session: sessionCfg
 });
 
 app.get('/', (req, res) => {
-    res.sendFile('./src/views/index.html', { root: __dirname });
+    res.sendFile('./src/views/index.html', {
+        root: __dirname
+    });
 })
 
 client.on(`message`, message => {
     msgHandler(client, message);
 })
 
-client.initialize(); 
+client.initialize();
 
 // Socket IO
 io.on('connection', (socket) => {
@@ -76,6 +83,6 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(8000, () => {
-    console.log('wa-bot running on : localhost:' + 8000);
+server.listen(port, () => {
+    console.log('wa-bot running on : localhost:' + port);
 })

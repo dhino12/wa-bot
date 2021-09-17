@@ -23,16 +23,14 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function () {
-            let socket = io.connect('http://localhost:8000', {
-                path: '/socket.io'
-            })
+            let socket = io()
 
             socket.on('message', (message) => {
                 $('.logs').append($('<li>').text(message))
             })
 
             socket.on('qr', function (src) {
-                $('#qrcode').attr('src', src);  
+                $('#qrcode').attr('src', src);
             })
 
             socket.on('ready', () => {
