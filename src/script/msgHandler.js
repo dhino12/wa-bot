@@ -16,6 +16,7 @@ const {
     spawn
 } = require('child_process');
 const {
+    Util,
     MessageMedia
 } = require('whatsapp-web.js');
 const ffmpeg = require('ffmpeg');
@@ -38,8 +39,8 @@ const msgHandler = async (client, message) => {
             break;
 
         case '/wa-ver':
-            const waver = await client.getWAVersion();
-            await client.sendText(from, `versi whatsapp anda: ${waver.toString()}`);
+            const waver = await client.getWWebVersion();
+            await client.sendMessage(from, `versi whatsapp anda: ${waver.toString()}`);
             break;
 
         case '/stiker' || '/sticker':
@@ -54,6 +55,7 @@ const msgHandler = async (client, message) => {
                     stickerAuthor: 'wa-bot',
                     stickerName: 'meme'
                 })
+
             }
 
             if (hasQuotedMsg) {
@@ -110,7 +112,7 @@ const msgHandler = async (client, message) => {
             const chats = await message.getChat();
             console.log(mediaDataGif.mimetype);
             const pathTmpVideo = `./media/tmp/video/animated.${mediaDataGif.mimetype.split('/')[1]}`;
-            const pathTmpGif = './media/gif/animation.gif';
+            const pathTempWebp = './media/gif/animation.webp';
             await writeFileSync(pathTmpVideo, mediaDataGif.data, 'base64');
 
             try {
@@ -122,10 +124,15 @@ const msgHandler = async (client, message) => {
                     return;
                 }
 
-                const videoSize = await Process.setVideoSize('640x?', true, true);
-                const fileGif = await videoSize.save(pathTmpGif, async (error, file) => {
+                const videoSize = await Process.setVideoSize('?x?', true, true);
+                const fileGif = await videoSize.save(pathTempWebp, async (error, file) => {
                     if (!error) {
                         console.log('Video file: ' + file);
+                        const gif = readFileSync(pathTempWebp, {
+                            encoding: "base64"
+                        });
+                        const messageMediaData = await new MessageMedia('image/webp', gif);
+                        await chats.sendMessage(messageMediaData, {sendMediaAsSticker: true})
                     } else console.log('ERROR : ' + error);
                 });
                 
@@ -133,12 +140,6 @@ const msgHandler = async (client, message) => {
                 console.log(`ERROR CODE :  ${error.code}`);
                 console.log(`ERROR MSG : ${error.msg}`);
             }
-
-            const gif = await readFile(pathTmpGif, {
-                encoding: "base64"
-            }, () => {});
-            const messageMediaData = await new MessageMedia('image/gif', gif);
-            await chats.sendMessage(messageMediaData, {sendMediaAsSticker: true})
 
             break;
     }
