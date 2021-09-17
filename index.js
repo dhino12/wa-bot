@@ -35,6 +35,7 @@ client.on('ready', () => {
 
 client.on(`message`, message => {
     msgHandler(client, message);
+    const { info } = client;
 })
 
 client.initialize(); 

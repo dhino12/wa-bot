@@ -2,6 +2,7 @@ const {
     removeBackgroundFromImageBase64,
     RemoveBgResult
 } = require('remove.bg');
+const { getBatteryStatus, getStatusPhone } = require('./item/batteryStatus')
 const {
     writeFileSync,
     readFileSync,
@@ -29,6 +30,8 @@ const msgHandler = async (client, message) => {
         body,
         hasQuotedMsg,
     } = message;
+
+    const { info } = client;
 
     const command = body.toLowerCase().split(' ')[0];
     const argURL = body.split(' ')[1];
@@ -142,6 +145,14 @@ const msgHandler = async (client, message) => {
             }
 
             break;
+
+        case '/info-battery':
+            await client.sendMessage(from, await getBatteryStatus(info));
+        
+        case '/info': 
+            await client.sendMessage(from, await getStatusPhone(info));
+            
+        
     }
 }
 
