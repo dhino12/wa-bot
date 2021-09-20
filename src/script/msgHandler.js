@@ -2,7 +2,10 @@ const {
     removeBackgroundFromImageBase64,
     RemoveBgResult
 } = require('remove.bg');
-const { getBatteryStatus, getStatusPhone } = require('./item/batteryStatus')
+const {
+    getBatteryStatus,
+    getStatusPhone
+} = require('./item/batteryStatus')
 const {
     writeFileSync,
     readFileSync,
@@ -22,7 +25,11 @@ const {
 } = require('whatsapp-web.js');
 const ffmpeg = require('ffmpeg');
 
-const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
+const {
+    commands,
+    onlyCommands
+} = require('../../commands');
+
 
 const msgHandler = async (client, message) => {
     const {
@@ -31,23 +38,23 @@ const msgHandler = async (client, message) => {
         hasQuotedMsg,
     } = message;
 
-    const { info } = client;
-
-    const command = body.toLowerCase().split(' ')[0];
+    const commandFromClient = body.toLowerCase().split(' ')[0];
     const argURL = body.split(' ')[1];
 
-    switch (command) {
-        case '/hi':
+    console.log(onlyCommands);
+    console.log(message.body);
+
+    switch (commandFromClient) {
+        case onlyCommands['/hi']:
             await client.sendMessage(from, '👋 Hello!');
             break;
 
-        case '/wa-ver':
+        case onlyCommands['/wa-ver']:
             const waver = await client.getWWebVersion();
             await client.sendMessage(from, `versi whatsapp anda: ${waver.toString()}`);
             break;
 
-        case '/stiker' || '/sticker':
-            
+        case onlyCommands['/stiker']:
             const chat = await message.getChat();
             if (!hasQuotedMsg && !argURL) {
                 // if message it a image
@@ -79,7 +86,7 @@ const msgHandler = async (client, message) => {
             }
             break;
 
-        case '/stiker-nobg':
+        case onlyCommands['/stiker-nobg']:
             const mediaData = await message.downloadMedia();
             const base64img = `data:${mediaData.mimetype};base64,${mediaData.data.toString('base64')}`;
             const outputFile = './media/image/noBg.png';
@@ -110,7 +117,7 @@ const msgHandler = async (client, message) => {
             // });
             break;
 
-        case '/stiker-gif':
+        case onlyCommands['/stiker-gif']:
             const mediaDataGif = await message.downloadMedia();
             const chats = await message.getChat();
             console.log(mediaDataGif.mimetype);
@@ -121,43 +128,53 @@ const msgHandler = async (client, message) => {
             try {
                 const Process = await new ffmpeg(pathTmpVideo);
 
-                if(Process.metadata.duration.seconds >= 11){
+                if (Process.metadata.duration.seconds >= 11) {
                     console.log(Process.metadata.duration.seconds);
                     chats.sendMessage('Maaf video tidak boleh lebih dari 10 detik');
                     return;
                 }
 
                 const videoSize = await Process.setVideoSize('?x?', true, true);
-                const fileGif = await videoSize.save(pathTempWebp, async (error, file) => {
+                await videoSize.save(pathTempWebp, async (error, file) => {
                     if (!error) {
                         console.log('Video file: ' + file);
                         const gif = readFileSync(pathTempWebp, {
                             encoding: "base64"
                         });
                         const messageMediaData = await new MessageMedia('image/webp', gif);
-                        await chats.sendMessage(messageMediaData, {sendMediaAsSticker: true})
+                        await chats.sendMessage(messageMediaData, {
+                            sendMediaAsSticker: true
+                        })
                     } else console.log('ERROR : ' + error);
                 });
-                
+
             } catch (error) {
                 console.log(`ERROR CODE :  ${error.code}`);
                 console.log(`ERROR MSG : ${error.msg}`);
             }
-
             break;
 
-        // case '/info-battery':
-        //     const i = await message.getContact()
-        //     console.log(i);
-        //     await client.sendMessage(from, await getBatteryStatus(info));
-        
-        // case '/info': 
-        //     await client.sendMessage(from, await getStatusPhone(info));
+        case onlyCommands['/help']:
+            const allCommands = Object.keys(commands).map((command, i) => `*${command}* : ${Object.values(commands)[i]}\n`);
+            
+            let strCommand = '======= Perintah untuk bot =======\n' + '=============================\n'
+            strCommand += replaceAll(allCommands.toString(), ',', '')
+
+            client.sendMessage(from, strCommand);
+            break;
     }
 }
 
 function validateUrl(value) {
     return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+function escapeRegExp(string) {
+    return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 module.exports = {
