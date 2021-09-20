@@ -1,9 +1,10 @@
 const commands = {
     '/hi': 'katakan halo',
-    '/wa_ver': 'lihat versi whatsapp',
+    '/wa-ver': 'lihat versi whatsapp',
     '/stiker': 'membuat stiker dengan gambar',
     '/stiker-nobg': 'membuat stiker tanpa background',
     '/stiker-gif': 'membuat stiker dengan video',
+    '/convert-to': 'convert video to mp3',
     '/help': 'bantuan'
 }
 

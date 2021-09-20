@@ -13,7 +13,8 @@ const {
     readFile,
     existsSync,
     mkdirSync,
-    createWriteStream
+    createWriteStream,
+    rmSync
 } = require('fs');
 const {
     exec,
@@ -40,9 +41,6 @@ const msgHandler = async (client, message) => {
 
     const commandFromClient = body.toLowerCase().split(' ')[0];
     const argURL = body.split(' ')[1];
-
-    console.log(onlyCommands);
-    console.log(message.body);
 
     switch (commandFromClient) {
         case onlyCommands['/hi']:
@@ -118,39 +116,43 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/stiker-gif']:
-            const mediaDataGif = await message.downloadMedia();
-            const chats = await message.getChat();
-            console.log(mediaDataGif.mimetype);
-            const pathTmpVideo = `./media/tmp/video/animated.${mediaDataGif.mimetype.split('/')[1]}`;
-            const pathTempWebp = './media/gif/animation.webp';
-            await writeFileSync(pathTmpVideo, mediaDataGif.data, 'base64');
 
             try {
+                const mediaDataGif = await message.downloadMedia();
+                const chats = await message.getChat();
+                console.log(mediaDataGif.mimetype, "\n");
+                const pathTmpVideo = `./media/tmp/video/animated.mp4`;
+                const pathTempWebp = './media/tmp/gif/animation.webp';
+                writeFileSync(pathTmpVideo, mediaDataGif.data, 'base64');
+
                 const Process = await new ffmpeg(pathTmpVideo);
 
                 if (Process.metadata.duration.seconds >= 11) {
                     console.log(Process.metadata.duration.seconds);
                     chats.sendMessage('Maaf video tidak boleh lebih dari 10 detik');
+                    rmSync(pathTmpVideo);
                     return;
                 }
-
-                const videoSize = await Process.setVideoSize('?x?', true, true);
-                await videoSize.save(pathTempWebp, async (error, file) => {
+                const videoSize = Process.setVideoSize('300x300', true, true);
+                videoSize.save(pathTempWebp, async (error, file) => {
                     if (!error) {
                         console.log('Video file: ' + file);
-                        const gif = readFileSync(pathTempWebp, {
-                            encoding: "base64"
-                        });
-                        const messageMediaData = await new MessageMedia('image/webp', gif);
+                        const gif = readFileSync(file, { encoding: "base64" });
+                        const messageMediaData = new MessageMedia('image/webp', gif);
                         await chats.sendMessage(messageMediaData, {
                             sendMediaAsSticker: true
-                        })
-                    } else console.log('ERROR : ' + error);
+                        });
+                        
+                        rmSync(pathTempWebp);
+                        rmSync(pathTmpVideo);
+                    } else{
+                        console.log('ERROR : ' + error)
+                    };
                 });
-
             } catch (error) {
                 console.log(`ERROR CODE :  ${error.code}`);
                 console.log(`ERROR MSG : ${error.msg}`);
+                console.log(error);
             }
             break;
 
@@ -162,6 +164,8 @@ const msgHandler = async (client, message) => {
 
             client.sendMessage(from, strCommand);
             break;
+
+        
     }
 }
 
