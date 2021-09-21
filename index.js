@@ -30,7 +30,8 @@ create({
         '--single-process', // <- this one doesn't works in Windows
         '--disable-gpu'
     ],
-}).then(client => start(client));
+}).then(client => start(client))
+.catch(error => console.log(error));
 
 function start(client) {
     client.onMessage(async message => {
