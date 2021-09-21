@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 })
 
 create({
+    headless: true,
     useChrome: true,
     qrTimeout: 0,
     authTimeout: 0,
