@@ -1,11 +1,14 @@
 const {
+    decryptMedia
+} = require('@open-wa/wa-decrypt');
+
+const {
     removeBackgroundFromImageBase64,
     RemoveBgResult
 } = require('remove.bg');
-const {
-    getBatteryStatus,
-    getStatusPhone
-} = require('./item/batteryStatus')
+
+const ffmpeg = require('ffmpeg');
+
 const {
     writeFileSync,
     readFileSync,
@@ -20,73 +23,61 @@ const {
     exec,
     spawn
 } = require('child_process');
-const {
-    Util,
-    MessageMedia
-} = require('whatsapp-web.js');
-const ffmpeg = require('ffmpeg');
 
-const {
-    commands,
-    onlyCommands
-} = require('../../commands');
-
+const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
 const msgHandler = async (client, message) => {
     const {
         from,
         body,
-        hasQuotedMsg,
+        quotedMsg,
+        caption,
+        mimetype,
+        duration,
+        id,
+        isMedia
     } = message;
 
-    const commandFromClient = body.toLowerCase().split(' ')[0];
-    const argURL = body.split(' ')[1];
 
-    switch (commandFromClient) {
-        case onlyCommands['/hi']:
-            await client.sendMessage(from, '👋 Hello!');
+    const commands = caption || body;
+    const command = commands.toLowerCase().split(' ')[0];
+    const arg = commands.split(' ')[1];
+
+    switch (command) {
+        case '/hi':
+            await client.sendText(from, '👋 Hello!');
             break;
 
-        case onlyCommands['/wa-ver']:
-            const waver = await client.getWWebVersion();
-            await client.sendMessage(from, `versi whatsapp anda: ${waver.toString()}`);
+        case '/wa-ver':
+            const waver = await client.getWAVersion();
+            await client.sendText(from, `versi whatsapp anda: ${waver.toString()}`);
             break;
 
-        case onlyCommands['/stiker']:
-            const chat = await message.getChat();
-            if (!hasQuotedMsg && !argURL) {
-                // if message it a image
-                const media = await message.downloadMedia();
-                const stickerMedia = new MessageMedia(media.mimetype, media.data);
-                await chat.sendMessage(stickerMedia, {
-                    sendMediaAsSticker: true,
-                    stickerAuthor: 'wa-bot',
-                    stickerName: 'meme'
-                })
-
-            }
-
-            if (hasQuotedMsg) {
-                // if reply message
-                const getReplyMessage = await message.getQuotedMessage();
-                const mediaReply = await getReplyMessage.downloadMedia();
-                const stickerMedia = new MessageMedia(mediaReply.mimetype, mediaReply.data);
-                chat.sendMessage(message.from, stickerMedia, {
-                    sendMediaAsSticker: true
+        case '/stiker' || '/sticker':
+            if (quotedMsg === '' || isMedia) {
+                const mediaData = await decryptMedia(message, useragentOverride);
+                const imgBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                await client.sendImageAsSticker(from, imgBase64, {
+                    author: '',
+                    circle: false,
+                    keepScale: true
                 });
             }
 
-            if (validateUrl(argURL)) {
-                const media = await MessageMedia.fromUrl(argURL)
-                chat.sendMessage(from, media, {
-                    sendMediaAsSticker: true
-                });
+            if (quotedMsg) {
+                const mediaData = await decryptMedia(quotedMsg, useragentOverride);
+                const imgBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`;
+                await client.sendImageAsSticker(from, imgBase64)
+            }
+
+            if (validateUrl(arg)) {
+                await client.sendStickerfromUrl(from, argURL)
             }
             break;
 
-        case onlyCommands['/stiker-nobg']:
-            const mediaData = await message.downloadMedia();
-            const base64img = `data:${mediaData.mimetype};base64,${mediaData.data.toString('base64')}`;
+        case '/stiker-nobg':
+            const mediaData = await decryptMedia(message, useragentOverride);
+            const base64img = `data:${mimetype};base64,${mediaData.toString('base64')}`;
             const outputFile = './media/image/noBg.png';
             const dirPath = './media/image';
 
@@ -103,11 +94,8 @@ const msgHandler = async (client, message) => {
                 type: 'product',
                 outputFile
             });
+            await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`);
 
-            const stickerMedia = new MessageMedia(mediaData.mimetype, result.base64img);
-            await client.sendMessage(from, stickerMedia, {
-                sendMediaAsSticker: true
-            });
             // nonaktif untuk menyimpan gambar yang di remove backgroundnya
             // await fs.writeFile(outputFile, result.base64img, (err) => {
             //     if(err) throw err
@@ -115,70 +103,44 @@ const msgHandler = async (client, message) => {
             // });
             break;
 
-        case onlyCommands['/stiker-gif']:
+        case '/stiker-gif':
+            if(mimetype === 'video/mp4' && duration <= '10') {
+                const md = await decryptMedia(message, useragentOverride);
+                const pathTmpVideo = `./media/tmp/video/animated.${mimetype.split('/')[1]}`;
+                const pathTmpGif = './media/tmp/gif/animation.webp';
+                await writeFileSync(pathTmpVideo, md);
 
-            try {
-                const mediaDataGif = await message.downloadMedia();
-                const chats = await message.getChat();
-                console.log(mediaDataGif.mimetype, "\n");
-                const pathTmpVideo = `./media/tmp/video/animated.mp4`;
-                const pathTempWebp = './media/tmp/gif/animation.webp';
-                writeFileSync(pathTmpVideo, mediaDataGif.data, 'base64');
+                try {
+                    const Process = await new ffmpeg('./media/tmp/video/animated.mp4');
+                    const widthVideo = Process.metadata.video.resolution.w
+                    const heightVideo = Process.metadata.video.resolution.h
+                    console.log(`${widthVideo} x ${heightVideo}`);
+                    const videoSize = await Process.setVideoSize(`512x512`, false, false);
+                    const i =  videoSize.save(pathTmpGif, async (error, file) => {
+                        if (!error) {
+                            console.log('Video file: ' + file);
+                            const gif = readFileSync(file, {
+                                encoding: "base64"
+                            });
+                            console.log(gif.length);
+                            await client.sendImageAsSticker(from, `data:image/webp;base64,${gif.toString('base64')}`);
+                            rmSync(pathTmpGif);
+                            rmSync(pathTmpVideo);
+                        } else console.log('ERROR : ' + error);
+                    });
 
-                const Process = await new ffmpeg(pathTmpVideo);
-
-                if (Process.metadata.duration.seconds >= 11) {
-                    console.log(Process.metadata.duration.seconds);
-                    chats.sendMessage('Maaf video tidak boleh lebih dari 10 detik');
-                    rmSync(pathTmpVideo);
-                    return;
+                } catch (error) {
+                    console.log(`ERROR CODE :  ${error.code}`);
+                    console.log(`ERROR MSG : ${error.msg}`);
                 }
-                const videoSize = Process.setVideoSize('300x300', true, true);
-                videoSize.save(pathTempWebp, async (error, file) => {
-                    if (!error) {
-                        console.log('Video file: ' + file);
-                        const gif = readFileSync(file, { encoding: "base64" });
-                        const messageMediaData = new MessageMedia('image/webp', gif);
-                        await chats.sendMessage(messageMediaData, {
-                            sendMediaAsSticker: true
-                        });
-                        
-                        rmSync(pathTempWebp);
-                        rmSync(pathTmpVideo);
-                    } else{
-                        console.log('ERROR : ' + error)
-                    };
-                });
-            } catch (error) {
-                console.log(`ERROR CODE :  ${error.code}`);
-                console.log(`ERROR MSG : ${error.msg}`);
-                console.log(error);
             }
+
             break;
-
-        case onlyCommands['/help']:
-            const allCommands = Object.keys(commands).map((command, i) => `*${command}* : ${Object.values(commands)[i]}\n`);
-            
-            let strCommand = '======= Perintah untuk bot =======\n' + '=============================\n'
-            strCommand += replaceAll(allCommands.toString(), ',', '')
-
-            client.sendMessage(from, strCommand);
-            break;
-
-        
     }
 }
 
 function validateUrl(value) {
     return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
-}
-
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
-
-function escapeRegExp(string) {
-    return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 module.exports = {
