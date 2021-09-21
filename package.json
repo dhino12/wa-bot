@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Dhino12/wa-bot#readme",
   "dependencies": {
+    "@open-wa/wa-automate": "^4.22.1",
     "express": "^4.17.1",
     "ffmpeg": "0.0.4",
     "nodemon": "^2.0.12",
