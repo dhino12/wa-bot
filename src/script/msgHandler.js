@@ -7,8 +7,6 @@ const {
     RemoveBgResult
 } = require('remove.bg');
 
-const ffmpeg = require('ffmpeg');
-
 const {
     writeFileSync,
     readFileSync,
@@ -23,6 +21,12 @@ const {
     exec,
     spawn
 } = require('child_process');
+
+const ffmpeg = require('fluent-ffmpeg');
+
+const {
+    stickerGifToWebp
+} = require('./item/stickerConverter');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -67,6 +71,7 @@ const msgHandler = async (client, message) => {
             if (quotedMsg) {
                 const mediaData = await decryptMedia(quotedMsg, useragentOverride);
                 const imgBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`;
+                console.log(quotedMsg);
                 await client.sendImageAsSticker(from, imgBase64)
             }
 
@@ -94,7 +99,11 @@ const msgHandler = async (client, message) => {
                 type: 'product',
                 outputFile
             });
-            await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`);
+            await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
+                author: '',
+                circle: false,
+                keepScale: true
+            });
 
             // nonaktif untuk menyimpan gambar yang di remove backgroundnya
             // await fs.writeFile(outputFile, result.base64img, (err) => {
@@ -104,36 +113,22 @@ const msgHandler = async (client, message) => {
             break;
 
         case '/stiker-gif':
-            if(mimetype === 'video/mp4' && duration <= '10') {
+            if (mimetype === 'video/mp4' && duration <= 10) {
                 const md = await decryptMedia(message, useragentOverride);
-                const pathTmpVideo = `./media/tmp/video/animated.${mimetype.split('/')[1]}`;
-                const pathTmpGif = './media/tmp/gif/animation.webp';
-                await writeFileSync(pathTmpVideo, md);
-
                 try {
-                    const Process = await new ffmpeg('./media/tmp/video/animated.mp4');
-                    const widthVideo = Process.metadata.video.resolution.w
-                    const heightVideo = Process.metadata.video.resolution.h
-                    console.log(`${widthVideo} x ${heightVideo}`);
-                    const videoSize = await Process.setVideoSize(`512x512`, false, false);
-                    const i =  videoSize.save(pathTmpGif, async (error, file) => {
-                        if (!error) {
-                            console.log('Video file: ' + file);
-                            const gif = readFileSync(file, {
-                                encoding: "base64"
-                            });
-                            console.log(gif.length);
-                            await client.sendImageAsSticker(from, `data:image/webp;base64,${gif.toString('base64')}`);
-                            rmSync(pathTmpGif);
-                            rmSync(pathTmpVideo);
-                        } else console.log('ERROR : ' + error);
-                    });
-
+                    const fileBuffer =  `data:${mimetype};base64,${md.toString('base64')}`;
+                    const result =  await client.sendMp4AsSticker(from, fileBuffer, {crop: false}, {keepScale: true});
+                    if(result){
+                        console.log(message);
+                    }
                 } catch (error) {
-                    console.log(`ERROR CODE :  ${error.code}`);
-                    console.log(`ERROR MSG : ${error.msg}`);
+                    console.log(error.data);
+                    client.reply(message.to, 'File membutuhkan waktu terlalu lama, bisa diulangi kembali', message.id);
                 }
+            } else {
+
             }
+
 
             break;
     }
