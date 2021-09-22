@@ -126,10 +126,7 @@ const msgHandler = async (client, message) => {
                     client.reply(message.to, 'File membutuhkan waktu terlalu lama, bisa diulangi kembali', message.id);
                 }
             } else {
-
             }
-
-
             break;
     }
 }
