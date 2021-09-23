@@ -132,6 +132,7 @@ const msgHandler = async (client, message) => {
             break;
 
         case '/download-yt':
+            console.log('start');
             if(validateUrl(arg)){
                 ytDownloader(arg)
             }
@@ -142,11 +143,16 @@ function validateUrl(value) {
     return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 }
 
-async function ytDownloader(link){
-    const info = await ytdl.getInfo(link)
-    console.log(info);
-    const video = ytdl(link, {quality: 'highestvideo'})
-        .pipe(createWriteStream(`./media/tmp/video/yt.mp4`))
+async function ytDownloader(link, quality=720){
+    const info = await ytdl.getBasicInfo(link);
+    const higher = info.formats.filter(item => item.height === quality && item.audioQuality !== undefined)[0];
+    const filePath = `./media/tmp/video/yt.${higher.mimeType.split((';'))[0].split('/')[1]}`
+    ytdl(link, { quality: higher.itag })
+        .pipe(createWriteStream(filePath))
+        .on('end', async () => {
+            await client.sendFile(filePath);
+            rmSync(filePath);
+        })
 }
 
 module.exports = {
