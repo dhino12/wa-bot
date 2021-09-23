@@ -17,6 +17,9 @@ const {
     createWriteStream,
     rmSync
 } = require('fs');
+
+const ytdl = require('ytdl-core');
+
 const {
     exec,
     spawn
@@ -40,6 +43,8 @@ const msgHandler = async (client, message) => {
     const commands = caption || body;
     const command = commands.toLowerCase().split(' ')[0];
     const arg = commands.split(' ')[1];
+    const optionFormat = commands.split(' ')[2]; // format video = mp4, webm
+    const optionSize = commands.split(' ')[3]; // size vide = 360p, 480p, 720p, 1080p,
 
     switch (command) {
         case '/hi':
@@ -110,23 +115,38 @@ const msgHandler = async (client, message) => {
             if (mimetype === 'video/mp4' && duration <= 10) {
                 const md = await decryptMedia(message, useragentOverride);
                 try {
-                    const fileBuffer =  `data:${mimetype};base64,${md.toString('base64')}`;
-                    const result =  await client.sendMp4AsSticker(from, fileBuffer, {crop: false}, {keepScale: true});
-                    if(result){
+                    const fileBuffer = `data:${mimetype};base64,${md.toString('base64')}`;
+                    const result = await client.sendMp4AsSticker(from, fileBuffer, {
+                        crop: false
+                    }, {
+                        keepScale: true
+                    });
+                    if (result) {
                         console.log(message);
                     }
                 } catch (error) {
                     console.log(error.data);
                     client.reply(message.to, 'File membutuhkan waktu terlalu lama, bisa diulangi kembali', message.id);
                 }
-            } else {
-            }
+            } else {}
             break;
+
+        case '/download-yt':
+            if(validateUrl(arg)){
+                ytDownloader(arg)
+            }
     }
 }
 
 function validateUrl(value) {
     return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+}
+
+async function ytDownloader(link){
+    const info = await ytdl.getInfo(link)
+    console.log(info);
+    const video = ytdl(link, {quality: 'highestvideo'})
+        .pipe(createWriteStream(`./media/tmp/video/yt.mp4`))
 }
 
 module.exports = {
