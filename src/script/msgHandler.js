@@ -8,10 +8,6 @@ const {
 } = require('remove.bg');
 
 const {
-    writeFileSync,
-    readFileSync,
-    writeFile,
-    readFile,
     existsSync,
     mkdirSync,
     createWriteStream,
@@ -21,9 +17,19 @@ const {
 const ytdl = require('ytdl-core');
 
 const {
+    replaceAll,
+    validateUrl
+} = require('./item/util');
+
+const {
     exec,
     spawn
 } = require('child_process');
+
+const {
+    commands,
+    onlyCommands
+} = require('./item/commands');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -47,16 +53,16 @@ const msgHandler = async (client, message) => {
     const optionSize = commands.split(' ')[3]; // size vide = 360p, 480p, 720p, 1080p,
 
     switch (command) {
-        case '/hi':
+        case onlyCommands['/hi']:
             await client.sendText(from, '👋 Hello!');
             break;
 
-        case '/wa-ver':
+        case onlyCommands['/wa-ver']:
             const waver = await client.getWAVersion();
             await client.sendText(from, `versi whatsapp anda: ${waver.toString()}`);
             break;
 
-        case '/stiker' || '/sticker':
+        case onlyCommands['/stiker']:
             if (quotedMsg === '' || isMedia) {
                 const mediaData = await decryptMedia(message, useragentOverride);
                 const imgBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
@@ -79,7 +85,7 @@ const msgHandler = async (client, message) => {
             }
             break;
 
-        case '/stiker-nobg':
+        case onlyCommands['/stiker-nobg']:
             const mediaData = await decryptMedia(message, useragentOverride);
             const base64img = `data:${mimetype};base64,${mediaData.toString('base64')}`;
             const outputFile = './media/image/noBg.png';
@@ -111,7 +117,7 @@ const msgHandler = async (client, message) => {
             // });
             break;
 
-        case '/stiker-gif':
+        case onlyCommands['/stiker-gif']:
             if (mimetype === 'video/mp4' && duration <= 10) {
                 const md = await decryptMedia(message, useragentOverride);
                 try {
@@ -131,27 +137,33 @@ const msgHandler = async (client, message) => {
             } else {}
             break;
 
-        case '/download-yt':
+        case onlyCommands['/yt']:
             console.log('start');
-            if(validateUrl(arg)){
+            if (validateUrl(arg)) {
                 ytDownloader(arg)
             }
+
+        case onlyCommands['/help']:
+            const allCommands = Object.keys(commands).map((command, i) => `*${command}* : ${Object.values(commands)[i]}\n`);
+            let strCommand = '======= Perintah untuk bot =======\n' + '=============================\n'
+            strCommand += replaceAll(allCommands.toString(), ',', '')
+            client.sendMessage(from, strCommand);
+            break; 
     }
 }
 
-function validateUrl(value) {
-    return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
-}
-
-async function ytDownloader(link, quality=720){
+async function ytDownloader(link, quality = 720) {
     const info = await ytdl.getBasicInfo(link);
+    console.log(info);
     const higher = info.formats.filter(item => item.height === quality && item.audioQuality !== undefined)[0];
     const filePath = `./media/tmp/video/yt.${higher.mimeType.split((';'))[0].split('/')[1]}`
-    ytdl(link, { quality: higher.itag })
+    ytdl(link, {
+            quality: higher.itag
+        })
         .pipe(createWriteStream(filePath))
         .on('end', async () => {
-            await client.sendFile(filePath);
-            rmSync(filePath);
+            // await client.sendFile(from, '');
+            // rmSync(filePath);
         })
 }
 
