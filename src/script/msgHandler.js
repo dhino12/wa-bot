@@ -148,7 +148,7 @@ const msgHandler = async (client, message) => {
             const allCommands = Object.keys(desc).map((command, i) => `*${command}* : ${Object.values(desc)[i]}\n`);
             let strCommand = '======= Perintah untuk bot =======\n' + '=============================\n'
             strCommand += replaceAll(allCommands.toString(), ',', '')
-            client.sendMessage(from, strCommand);
+            await client.sendText(from, strCommand);
             break; 
     }
 }
