@@ -27,7 +27,7 @@ const {
 } = require('child_process');
 
 const {
-    commands,
+    desc,
     onlyCommands
 } = require('./item/commands');
 
@@ -140,11 +140,12 @@ const msgHandler = async (client, message) => {
         case onlyCommands['/yt']:
             console.log('start');
             if (validateUrl(arg)) {
-                ytDownloader(arg)
+                // ytDownloader(arg)
             }
+        break;
 
         case onlyCommands['/help']:
-            const allCommands = Object.keys(commands).map((command, i) => `*${command}* : ${Object.values(commands)[i]}\n`);
+            const allCommands = Object.keys(desc).map((command, i) => `*${command}* : ${Object.values(desc)[i]}\n`);
             let strCommand = '======= Perintah untuk bot =======\n' + '=============================\n'
             strCommand += replaceAll(allCommands.toString(), ',', '')
             client.sendMessage(from, strCommand);
