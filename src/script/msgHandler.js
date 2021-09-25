@@ -81,7 +81,7 @@ const msgHandler = async (client, message) => {
             }
 
             if (validateUrl(arg)) {
-                await client.sendStickerfromUrl(from, argURL)
+                await client.sendStickerfromUrl(from, arg)
             }
             break;
 
