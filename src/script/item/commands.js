@@ -1,4 +1,4 @@
-const commands = {
+const desc = {
     '/hi': 'katakan halo',
     '/wa-ver': 'lihat versi whatsapp',
     '/stiker': 'membuat stiker dengan gambar',
@@ -9,6 +9,6 @@ const commands = {
 }
 
 const onlyCommands = {};
-Object.keys(commands).map(command => onlyCommands[`${command}`] = command);
+Object.keys(desc).map(command => onlyCommands[`${command}`] = command);
 
-module.exports = {commands, onlyCommands}
+module.exports = {desc, onlyCommands}
