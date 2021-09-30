@@ -129,8 +129,10 @@ const msgHandler = async (client, message) => {
                 const md = await decryptMedia(dataMessage, useragentOverride);
                 try {
                     const fileBuffer = `data:${mimetype};base64,${md.toString('base64')}`;
-                    const result = await client.sendMp4AsSticker(from, fileBuffer, { crop: false }, {
-                        keepScale: true 
+                    const result = await client.sendMp4AsSticker(from, fileBuffer, {
+                        crop: false
+                    }, {
+                        keepScale: true
                     });
                 } catch (error) {
                     console.log(error.data);
@@ -146,7 +148,12 @@ const msgHandler = async (client, message) => {
         case onlyCommands['/yt']:
             console.log('start');
             if (validateUrl(arg)) {
-                ytDownloader(arg)
+                // const filePath = await ytDownloader(arg); 
+                // if(existsSync(filePath)){ 
+                //     const nameFile = filePath.split('/')[4];
+                //     await client.sendFile(from, `./media/tmp/video/${nameFile}`, nameFile, nameFile).catch(e => console.log(e));
+                //     // rmSync(filePath);
+                // }
             }
             break;
 
@@ -160,21 +167,22 @@ const msgHandler = async (client, message) => {
 }
 
 async function ytDownloader(link, quality = '720p') {
-    const info = await ytdl.getBasicInfo(link);
-    console.log(info);
-    if(info.videoDetails.lengthSeconds <= 1800){
-        const higher = info.formats.filter(item => item.qualityLabel === quality && item.audioQuality !== undefined)[0];
-        const filePath = `./media/tmp/video/yt.${higher.mimeType.split((';'))[0].split('/')[1]}`
+    const { videoDetails, formats } = await ytdl.getBasicInfo(link);
+    // console.log(info);
+    if (videoDetails.lengthSeconds <= 1800) {
+        console.log(videoDetails);
+        const higher = formats.filter(item => item.qualityLabel === quality && item.audioQuality !== undefined)[0];
+        const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
         ytdl(link, {
                 quality: higher.itag
             })
-            .pipe(
-                // createWriteStream(filePath)
-            )
-            // .on('end', async () => {
-            //     // await client.sendFile(from, filePath, );
-            //     // rmSync(filePath);
-            // })
+            .pipe(createWriteStream(filePath))
+            .end(() => {
+                return filePath
+            });
+        return filePath;
+    } else {
+        await client.reply(from, `Video tidak boleh lebih dari 30menit,\nsedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`)
     }
 }
 
