@@ -78,9 +78,7 @@ const msgHandler = async (client, message) => {
                     circle: false,
                     keepScale: true
                 })
-            }
-
-            if (isMedia) {
+            } else {
                 const mediaData = await decryptMedia(dataMessage, useragentOverride);
                 const imgBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
                 await client.sendImageAsSticker(from, imgBase64, {
