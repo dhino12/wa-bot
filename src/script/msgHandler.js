@@ -31,6 +31,8 @@ const {
     onlyCommands
 } = require('./item/commands');
 
+let startTime = 0;
+
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
 const msgHandler = async (client, message) => {
@@ -145,13 +147,34 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/yt']:
             console.log('start');
+
+            if (arg === 'info') {
+
+            }
+
             if (validateUrl(arg)) {
-                // const filePath = await ytDownloader(arg); 
-                // if(existsSync(filePath)){ 
-                //     const nameFile = filePath.split('/')[4];
-                //     await client.sendFile(from, `./media/tmp/video/${nameFile}`, nameFile, nameFile).catch(e => console.log(e));
-                //     // rmSync(filePath);
-                // }
+                const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
+                ++startTime;
+                console.log(startTime);
+                if (videoDetails.lengthSeconds <= 1800) {
+                    if ( startTime > 1 ) {
+                        await client.sendText(from, 'proses download masih berlangsung, harap 1 per 1');
+                        return;
+                    }
+                    const higher = formats.filter(item => item.qualityLabel === '720p' && item.audioQuality !== undefined)[0];
+                    const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
+                    ytdl(arg)
+                        .pipe(createWriteStream(filePath))
+                        .on('finish', async () => {
+                            const fileName = filePath.split('/')[4];
+                            await client.sendFile(from, filePath, fileName, fileName);
+                            rmSync(filePath);
+                            startTime = 0;
+                        })
+                    return filePath;
+                } else {
+                    await client.reply(from, `Video tidak boleh lebih dari 30menit,\nsedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`)
+                }
             }
             break;
 
@@ -164,24 +187,7 @@ const msgHandler = async (client, message) => {
     }
 }
 
-async function ytDownloader(link, quality = '720p') {
-    const { videoDetails, formats } = await ytdl.getBasicInfo(link);
-    // console.log(info);
-    if (videoDetails.lengthSeconds <= 1800) {
-        console.log(videoDetails);
-        const higher = formats.filter(item => item.qualityLabel === quality && item.audioQuality !== undefined)[0];
-        const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
-        ytdl(link, {
-                quality: higher.itag
-            })
-            .pipe(createWriteStream(filePath))
-            .end(() => {
-                return filePath
-            });
-        return filePath;
-    } else {
-        await client.reply(from, `Video tidak boleh lebih dari 30menit,\nsedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`)
-    }
+async function ytDownloader(link, quality = '720p', client) {
 }
 
 module.exports = {
