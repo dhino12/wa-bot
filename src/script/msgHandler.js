@@ -31,6 +31,9 @@ const {
     onlyCommands
 } = require('./item/commands');
 
+const os = require('os');
+const e = require('cors');
+
 let startTime = 0;
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
@@ -52,8 +55,8 @@ const msgHandler = async (client, message) => {
     const commands = caption || body;
     const command = commands.toLowerCase().split(' ')[0];
     const arg = commands.split(' ')[1];
-    const optionFormat = commands.split(' ')[2]; // format video = mp4, webm
-    const optionSize = commands.split(' ')[3]; // size vide = 360p, 480p, 720p, 1080p,
+    const optionSize = commands.split(' ')[2]; // size video = 360p, 480p, 720p, 1080p,
+    const optionInfo = commands.split(' ')[3]; // info video
     let dataMessage = undefined;
     if (quotedMsg) {
         dataMessage = quotedMsg;
@@ -66,6 +69,7 @@ const msgHandler = async (client, message) => {
     switch (command) {
         case onlyCommands['/hi']:
             await client.sendText(from, '👋 Hello!');
+            console.log(os.platform());
             break;
 
         case onlyCommands['/wa-ver']:
@@ -138,33 +142,35 @@ const msgHandler = async (client, message) => {
                     console.log(error.data);
                     await client.reply(from, 'File membutuhkan waktu terlalu lama, bisa diulangi kembali', id);
                 }
-            }
-
-            if (validateUrl(arg)) {
-
-            }
+            } 
             break;
 
         case onlyCommands['/yt']:
             console.log('start');
 
-            if (arg === 'info') {
-
-            }
-
             if (validateUrl(arg)) {
                 const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
                 ++startTime;
-                console.log(startTime);
                 if (videoDetails.lengthSeconds <= 1800) {
                     if ( startTime > 1 ) {
                         await client.sendText(from, 'proses download masih berlangsung, harap 1 per 1');
                         return;
                     }
-                    const higher = formats.filter(item => item.qualityLabel === '720p' && item.audioQuality !== undefined)[0];
+                    if( optionInfo === 'info' || optionSize === 'info') {
+                        const videoSize = `List Size Video\n============== ${infoVideoYt(formats)}`; 
+                        await client.sendText(from, videoSize.toString());
+                        startTime = 0;
+                        return;
+                    }
+                    const higher = formats.filter(item => item.qualityLabel === `${
+                        (optionSize !== undefined)? optionSize : searchVideoBestQuality(formats)[0].qualityLabel
+                    }` && item.audioQuality !== undefined)[0];
                     const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
                     ytdl(arg)
                         .pipe(createWriteStream(filePath))
+                        .on('error', (e) => {
+                            console.log(e);
+                        })
                         .on('finish', async () => {
                             const fileName = filePath.split('/')[4];
                             await client.sendFile(from, filePath, fileName, fileName);
@@ -187,7 +193,22 @@ const msgHandler = async (client, message) => {
     }
 }
 
-async function ytDownloader(link, quality = '720p', client) {
+function infoVideoYt(formats) {
+    return formats.map(video => { 
+        if(video.audioQuality !== undefined && video.qualityLabel !== undefined) {
+            return `\n${video.qualityLabel}`
+        } else {
+            if (video.qualityLabel !== undefined) {
+                return `\n${video.qualityLabel} hanya video`
+            } else {
+                return `\n${video.audioSampleRate / 100}/kbps hanya audio`
+            }
+        }
+    });
+}
+
+function searchVideoBestQuality (formats) {
+    return formats.filter(video => video.qualityLabel !== undefined && video.audioQuality !== undefined)
 }
 
 module.exports = {
