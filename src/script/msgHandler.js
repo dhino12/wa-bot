@@ -194,8 +194,8 @@ const msgHandler = async (client, message) => {
                 } else {
                     await client.reply(
                         from, 
-                        `Video tidak boleh lebih dari 30menit,\n
-                        sedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`,
+                        'Video tidak boleh lebih dari 30menit,\n' + 
+                        `sedangkan video anda ${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}`,
                         id
                     )
                 }
