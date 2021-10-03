@@ -203,6 +203,7 @@ const msgHandler = async (client, message) => {
                     }
                 } catch (error) {
                     console.log(error);
+                    console.log(error.message);
                 }
             }
             break;
