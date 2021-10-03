@@ -61,7 +61,7 @@ const msgHandler = async (client, message) => {
     const optionInfo = commands.split(' ')[3]; // info video
     let dataMessage = undefined;
     
-    if (allCommands.filter(command => command != body || command != caption)) return;
+    // if (allCommands.filter(command => command != body || command != caption)) return;
     
     if (quotedMsg) {
         dataMessage = quotedMsg;
