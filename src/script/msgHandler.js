@@ -180,7 +180,7 @@ const msgHandler = async (client, message) => {
                                 );
                             return;
                         }
-                        const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
+                        const filePath = `./media/tmp/video/tmpYt.${higher.mimeType.split(';')[0].split('/')[1]}`
                         ytdl(arg)
                             .pipe(createWriteStream(filePath))
                             .on('error', (e) => {
