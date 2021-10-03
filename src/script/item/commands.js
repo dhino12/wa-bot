@@ -1,10 +1,11 @@
 const desc = {
     '/hi': 'katakan halo',
-    '/wa-ver': 'lihat versi whatsapp',
+    '/kick': 'Kick seseorang',
     '/stiker': 'membuat stiker dengan gambar',
     '/stiker-nobg': 'membuat stiker tanpa background',
     '/stiker-gif': 'membuat stiker dengan video',
-    '/yt':'download video youtube',
+    '/wa-ver': 'lihat versi whatsapp',
+    '/yt': 'download video youtube',
     '/help': 'bantuan'
 }
 
