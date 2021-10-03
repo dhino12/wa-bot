@@ -47,7 +47,9 @@ const msgHandler = async (client, message) => {
         mimetype,
         duration,
         id,
-        isMedia
+        isMedia,
+        isGroupMsg,
+        mentionedJidList
     } = message;
 
     // if (!caption.search('/') && !validateUrl(caption)) return;
@@ -55,9 +57,12 @@ const msgHandler = async (client, message) => {
     const commands = caption || body;
     const command = commands.toLowerCase().split(' ')[0];
     const arg = commands.split(' ')[1];
-    const optionSize = commands.split(' ')[2]; // size video = 360p, 480p, 720p, 1080p,
+    const optionSize = commands.split(' ')[2]; // size video = 360p, 480p, 720p, 1080p / info video
     const optionInfo = commands.split(' ')[3]; // info video
     let dataMessage = undefined;
+    
+    if (allCommands.filter(command => command != body || command != caption)) return;
+    
     if (quotedMsg) {
         dataMessage = quotedMsg;
         mimetype = dataMessage.mimetype;
@@ -153,7 +158,7 @@ const msgHandler = async (client, message) => {
                 ++startTime;
                 if (videoDetails.lengthSeconds <= 1800) {
                     if ( startTime > 1 ) {
-                        await client.sendText(from, 'proses download masih berlangsung, harap 1 per 1');
+                        await client.reply(from, 'proses download masih berlangsung, harap 1 per 1', id);
                         return;
                     }
                     if( optionInfo === 'info' || optionSize === 'info') {
@@ -165,9 +170,18 @@ const msgHandler = async (client, message) => {
                     const higher = formats.filter(item => item.qualityLabel === `${
                         (optionSize !== undefined)? optionSize : searchVideoBestQuality(formats)[0].qualityLabel
                     }` && item.audioQuality !== undefined)[0];
+
+                    if (higher === undefined) {
+                        await client.sendText(
+                            from, 
+                            `Video youtube dengan size ${optionSize} tidak tersedia, cek dengan /yt <link> info`
+                            );
+                        return;
+                    }
                     const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
                     ytdl(arg)
                         .pipe(createWriteStream(filePath))
+                        
                         .on('error', (e) => {
                             console.log(e);
                         })
@@ -177,9 +191,26 @@ const msgHandler = async (client, message) => {
                             rmSync(filePath);
                             startTime = 0;
                         })
-                    return filePath;
                 } else {
-                    await client.reply(from, `Video tidak boleh lebih dari 30menit,\nsedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`)
+                    await client.reply(
+                        from, 
+                        `Video tidak boleh lebih dari 30menit,\n
+                        sedangkan video anda ${videoDetails.lengthSeconds / 60}:${Math.floor(videoDetails.lengthSeconds % 60)}`,
+                        id
+                    )
+                }
+            }
+            break;
+
+        case onlyCommands['/kick']:
+            if (isGroupMsg) {
+                console.log(message);
+                if (mentionedJidList.length <= 1) {
+                    await client.removeParticipant(from, mentionedJidList[0])
+                } else {
+                    mentionedJidList.forEach(async (participant) => {
+                        await client.removeParticipant(from, participant)
+                    });
                 }
             }
             break;
