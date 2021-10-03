@@ -18,7 +18,8 @@ const ytdl = require('ytdl-core');
 
 const {
     replaceAll,
-    validateUrl
+    validateUrl,
+    overcomeENOENT
 } = require('./item/util');
 
 const {
@@ -178,7 +179,7 @@ const msgHandler = async (client, message) => {
                             );
                         return;
                     }
-                    const filePath = `./media/tmp/video/${videoDetails.title.replace('/', '-')}.${higher.mimeType.split(';')[0].split('/')[1]}`
+                    const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     ytdl(arg)
                         .pipe(createWriteStream(filePath))
                         .on('error', (e) => {
