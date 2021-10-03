@@ -181,7 +181,6 @@ const msgHandler = async (client, message) => {
                     const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
                     ytdl(arg)
                         .pipe(createWriteStream(filePath))
-                        
                         .on('error', (e) => {
                             console.log(e);
                         })
