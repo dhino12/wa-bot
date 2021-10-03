@@ -13,19 +13,19 @@ function validateUrl(value) {
 
 function overcomeENOENT (title) {
     if (title.search('/')) {
-        return replaceAll(title, '/', '-');
+        return replaceAll(title, '/', ' ');
     } else if (title.search(':')) {
-        return replaceAll(title, ':', '-');
+        return replaceAll(title, ':', ' ');
     } else if (title.search('\\')) {
-        return replaceAll(title, '\\', '-');
+        return replaceAll(title, '\\', ' ');
     } else if (title.search('?')) {
-        return replaceAll(title, '?', '-');
+        return replaceAll(title, '?', ' ');
     } else if (title.search('<')) {
-        return replaceAll(title, '<', '-');
+        return replaceAll(title, '<', ' ');
     } else if (title.search('>')) {
-        return replaceAll(title, '>', '-');
+        return replaceAll(title, '>', ' ');
     } else if (title.search('|')) {
-        return replaceAll(title, '|', '-')
+        return replaceAll(title, '|', ' ')
     }
 }
 
