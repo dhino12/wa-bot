@@ -178,11 +178,12 @@ const msgHandler = async (client, message) => {
                             );
                         return;
                     }
-                    const filePath = `./media/tmp/video/${videoDetails.title}.${higher.mimeType.split((';'))[0].split('/')[1]}`
+                    const filePath = `./media/tmp/video/${videoDetails.title.replace('/', '-')}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     ytdl(arg)
                         .pipe(createWriteStream(filePath))
                         .on('error', (e) => {
                             console.log(e);
+                            startTime = 0;
                         })
                         .on('finish', async () => {
                             const fileName = filePath.split('/')[4];
