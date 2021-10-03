@@ -155,50 +155,54 @@ const msgHandler = async (client, message) => {
             console.log('start');
 
             if (validateUrl(arg)) {
-                const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
-                ++startTime;
-                if (videoDetails.lengthSeconds <= 1800) {
-                    if ( startTime > 1 ) {
-                        await client.reply(from, 'proses download masih berlangsung, harap 1 per 1', id);
-                        return;
-                    }
-                    if( optionInfo === 'info' || optionSize === 'info') {
-                        const videoSize = `List Size Video\n============== ${infoVideoYt(formats)}`; 
-                        await client.sendText(from, videoSize.toString());
-                        startTime = 0;
-                        return;
-                    }
-                    const higher = formats.filter(item => item.qualityLabel === `${
-                        (optionSize !== undefined)? optionSize : searchVideoBestQuality(formats)[0].qualityLabel
-                    }` && item.audioQuality !== undefined)[0];
+                try { 
+                    const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
+                    ++startTime;
+                    if (videoDetails.lengthSeconds <= 1800) {
+                        if ( startTime > 1 ) {
+                            await client.reply(from, 'proses download masih berlangsung, harap 1 per 1', id);
+                            return;
+                        }
+                        if( optionInfo === 'info' || optionSize === 'info') {
+                            const videoSize = `List Size Video\n============== ${infoVideoYt(formats)}`; 
+                            await client.sendText(from, videoSize.toString());
+                            startTime = 0;
+                            return;
+                        }
+                        const higher = formats.filter(item => item.qualityLabel === `${
+                            (optionSize !== undefined)? optionSize : searchVideoBestQuality(formats)[0].qualityLabel
+                        }` && item.audioQuality !== undefined)[0];
 
-                    if (higher === undefined) {
-                        await client.sendText(
+                        if (higher === undefined) {
+                            await client.sendText(
+                                from, 
+                                `Video youtube dengan size ${optionSize} tidak tersedia, cek dengan /yt <link> info`
+                                );
+                            return;
+                        }
+                        const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
+                        ytdl(arg)
+                            .pipe(createWriteStream(filePath))
+                            .on('error', (e) => {
+                                console.log(e);
+                                startTime = 0;
+                            })
+                            .on('finish', async () => {
+                                const fileName = filePath.split('/')[4];
+                                await client.sendFile(from, filePath, fileName, fileName);
+                                rmSync(filePath);
+                                startTime = 0;
+                            })
+                    } else {
+                        await client.reply(
                             from, 
-                            `Video youtube dengan size ${optionSize} tidak tersedia, cek dengan /yt <link> info`
-                            );
-                        return;
+                            'Video tidak boleh lebih dari 30menit,\n' + 
+                            `sedangkan video anda ${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}`,
+                            id
+                        )
                     }
-                    const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
-                    ytdl(arg)
-                        .pipe(createWriteStream(filePath))
-                        .on('error', (e) => {
-                            console.log(e);
-                            startTime = 0;
-                        })
-                        .on('finish', async () => {
-                            const fileName = filePath.split('/')[4];
-                            await client.sendFile(from, filePath, fileName, fileName);
-                            rmSync(filePath);
-                            startTime = 0;
-                        })
-                } else {
-                    await client.reply(
-                        from, 
-                        'Video tidak boleh lebih dari 30menit,\n' + 
-                        `sedangkan video anda ${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}`,
-                        id
-                    )
+                } catch (error) {
+                    console.log(error);
                 }
             }
             break;
