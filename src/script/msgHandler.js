@@ -37,6 +37,8 @@ const os = require('os');
 const e = require('cors');
 
 let startTime = 0;
+let percentDownload = 0;
+let titleVideo = ''
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -155,22 +157,27 @@ const msgHandler = async (client, message) => {
         case onlyCommands['/yt']:
             console.log('start');
 
+            if (arg === 'info') {
+                // jika perintahnya /yt info
+                await client.sendText(from, `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`);
+            }
+
             if (validateUrl(arg)) { 
                 const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
-                let percentDownload = 0;
-                let titleVideo = ''
-                let starttime
+
                 ++startTime;
                 if (videoDetails.lengthSeconds <= 1800) {
                     if( optionInfo === 'info' || optionSize === 'info') {
+                        // jika perintahnya /yt <link> info
                         await client.sendText(from, `List Size Video\n============== ${infoVideoYt(formats)}`);
                         return;
                     }
                     if ( startTime > 1 ) {
+                        // jika ingin memulai download baru tetapi proses sebelumnya belum selesai
                         await client.reply(
                             from, 
-                            `${(percent * 100).toFixed(2)}% downloaded` +
-                            `\nproses download video ${titleVideo} masih berlangsung, harap 1 per 1`,
+                            `${percentDownload}% downloaded` +
+                            `\nproses download video *${titleVideo}* masih berlangsung, harap 1 per 1`,
                             id);
                         return;
                     }
@@ -188,13 +195,11 @@ const msgHandler = async (client, message) => {
                     }
                     const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     titleVideo = videoDetails.title;
-                    
-                    ytdl(arg)
-                        .once('response', () => {
-                            starttime = Date.now();
-                        })
+
+                    ytdl(arg) 
                         .on('progress', (chunkLength, downloaded, total) => {
-                            percent = downloaded / total;
+                            percentDownload = ((downloaded / total) * 100).toFixed(2);
+                            // console.log(percentDownload); process download
                         })
                         .pipe(createWriteStream(filePath))
                         .on('error', (e) => {
