@@ -188,6 +188,7 @@ const msgHandler = async (client, message) => {
                     }
                     const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     titleVideo = videoDetails.title;
+                    
                     ytdl(arg)
                         .once('response', () => {
                             starttime = Date.now();
