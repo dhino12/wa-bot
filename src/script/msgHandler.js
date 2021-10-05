@@ -40,6 +40,7 @@ let startTime = 0;
 let percentDownload = 0;
 let titleVideo = ''
 
+const cookieYt = 'VISITOR_INFO1_LIVE=9-uv687NDN0; LOGIN_INFO=AFmmF2swRAIgX0UctvZtu1jcn8noKCu6Dq7jNqRh2XKrAkVF4gJrJa4CIFd5scEgrFmqlDsJvimNYAt2BObDYtoHuAZmguVpIR2Y:QUQ3MjNmekRSVzNjQ2ZqcVpKWUtHNjF2X2diMTZLOWY4SWhzZ0RhT1EzRENDcjlyM2lLMzNRSHBqZV9adWtnUk5hQ3Zoa0VIOUh0MFJtZV9Wb3VYOHZTMFVnUlNDVExEYU5MX1ZFNUduSmNWQVBDeGcybG0zakFWYUxYTFNiU1Vxa2pPQ3h3aXFpUVczTHhNZkJmRkZkRUg1c3NuZDllU2N3; PREF=tz=Asia.Jakarta;'
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
 const msgHandler = async (client, message) => {
@@ -142,7 +143,7 @@ const msgHandler = async (client, message) => {
                 const md = await decryptMedia(dataMessage, useragentOverride);
                 try {
                     const fileBuffer = `data:${mimetype};base64,${md.toString('base64')}`;
-                    const result = await client.sendMp4AsSticker(from, fileBuffer, {
+                    await client.sendMp4AsSticker(from, fileBuffer, {
                         crop: false
                     }, {
                         keepScale: true
@@ -156,22 +157,26 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/yt']:
             console.log('start');
-
-            if (arg === 'info') {
+            
+            if (arg === 'info' && titleVideo !== '') {
                 // jika perintahnya /yt info
                 await client.sendText(from, `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`);
             }
 
             if (validateUrl(arg)) { 
-                const { videoDetails, formats } = await ytdl.getBasicInfo(arg);
+                const { videoDetails, formats } = await ytdl.getBasicInfo(arg).catch(async (e) => {
+                    console.log(e);
+                    await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube');
+                });
+
+                if( optionInfo === 'info' || optionSize === 'info') {
+                    // jika perintahnya /yt <link> info
+                    await client.sendText(from, `List Size Video\n============== ${infoVideoYt(formats)}`);
+                    return;
+                }
 
                 ++startTime;
                 if (videoDetails.lengthSeconds <= 1800) {
-                    if( optionInfo === 'info' || optionSize === 'info') {
-                        // jika perintahnya /yt <link> info
-                        await client.sendText(from, `List Size Video\n============== ${infoVideoYt(formats)}`);
-                        return;
-                    }
                     if ( startTime > 1 ) {
                         // jika ingin memulai download baru tetapi proses sebelumnya belum selesai
                         await client.reply(
@@ -196,7 +201,13 @@ const msgHandler = async (client, message) => {
                     const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     titleVideo = videoDetails.title;
 
-                    ytdl(arg) 
+                    ytdl(arg, {
+                        requestOptions: {
+                            Headers: {
+                                COOKIE: cookieYt
+                            }
+                        }
+                    }) 
                         .on('progress', (chunkLength, downloaded, total) => {
                             percentDownload = ((downloaded / total) * 100).toFixed(2);
                             // console.log(percentDownload); process download
@@ -215,7 +226,7 @@ const msgHandler = async (client, message) => {
                 } else {
                     await client.reply(
                         from, 
-                        `Video tidak boleh lebih dari 30menit,\nsedangkan video anda` +
+                        `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
                         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`,
                         id
                     )
@@ -225,7 +236,6 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/kick']:
             if (isGroupMsg) {
-                console.log(message);
                 if (mentionedJidList.length <= 1) {
                     await client.removeParticipant(from, mentionedJidList[0])
                 } else {
