@@ -40,7 +40,7 @@ let startTime = 0;
 let percentDownload = 0;
 let titleVideo = ''
 
-const cookieYt = 'VISITOR_INFO1_LIVE=9-uv687NDN0; LOGIN_INFO=AFmmF2swRAIgX0UctvZtu1jcn8noKCu6Dq7jNqRh2XKrAkVF4gJrJa4CIFd5scEgrFmqlDsJvimNYAt2BObDYtoHuAZmguVpIR2Y:QUQ3MjNmekRSVzNjQ2ZqcVpKWUtHNjF2X2diMTZLOWY4SWhzZ0RhT1EzRENDcjlyM2lLMzNRSHBqZV9adWtnUk5hQ3Zoa0VIOUh0MFJtZV9Wb3VYOHZTMFVnUlNDVExEYU5MX1ZFNUduSmNWQVBDeGcybG0zakFWYUxYTFNiU1Vxa2pPQ3h3aXFpUVczTHhNZkJmRkZkRUg1c3NuZDllU2N3; PREF=tz=Asia.Jakarta;'
+const cookieYt = 'VISITOR_INFO1_LIVE=9-uv687NDN0; LOGIN_INFO=AFmmF2swRAIgX0UctvZtu1jcn8noKCu6Dq7jNqRh2XKrAkVF4gJrJa4CIFd5scEgrFmqlDsJvimNYAt2BObDYtoHuAZmguVpIR2Y:QUQ3MjNmekRSVzNjQ2ZqcVpKWUtHNjF2X2diMTZLOWY4SWhzZ0RhT1EzRENDcjlyM2lLMzNRSHBqZV9adWtnUk5hQ3Zoa0VIOUh0MFJtZV9Wb3VYOHZTMFVnUlNDVExEYU5MX1ZFNUduSmNWQVBDeGcybG0zakFWYUxYTFNiU1Vxa2pPQ3h3aXFpUVczTHhNZkJmRkZkRUg1c3NuZDllU2N3; PREF=tz=Asia.Jakarta; SID=CggAKzh7kgS6pRIhET1oTG-495DmYjLWymR8fIeDcL13sw4wPDCF1N7oxAdof6gjpmKBLg.;'
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
 const msgHandler = async (client, message) => {
@@ -164,7 +164,13 @@ const msgHandler = async (client, message) => {
             }
 
             if (validateUrl(arg)) { 
-                const { videoDetails, formats } = await ytdl.getBasicInfo(arg).catch(async (e) => {
+                const { videoDetails, formats } = await ytdl.getInfo(arg, {
+                    requestOptions: {
+                        header: {
+                            cookie: cookieYt
+                        }
+                    }
+                }).catch(async (e) => {
                     console.log(e);
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube');
                 });
@@ -201,13 +207,7 @@ const msgHandler = async (client, message) => {
                     const filePath = `./media/tmp/video/${overcomeENOENT(videoDetails.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
                     titleVideo = videoDetails.title;
 
-                    ytdl(arg, {
-                        requestOptions: {
-                            Headers: {
-                                COOKIE: cookieYt
-                            }
-                        }
-                    }) 
+                    ytdl(arg) 
                         .on('progress', (chunkLength, downloaded, total) => {
                             percentDownload = ((downloaded / total) * 100).toFixed(2);
                             // console.log(percentDownload); process download
