@@ -81,7 +81,7 @@ const msgHandler = async (client, message) => {
             await client.sendText(from, '👋 Hello!');
             console.log(os.platform());
             break;
-
+ 
         case onlyCommands['/wa-ver']:
             const waver = await client.getWAVersion();
             await client.sendText(from, `versi whatsapp anda: ${waver.toString()}`);
