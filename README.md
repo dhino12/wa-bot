@@ -6,3 +6,4 @@ https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
 https://github.com/heroku/heroku-buildpack-google-chrome.git
 https://www.youtube.com/watch?v=u1ZslGU-z44
 https://github.com/open-wa/wa-automate-nodejs/issues/1473
+https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
