@@ -156,8 +156,8 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/yt']:
-            console.log('start');
-            
+            console.log('start'); 
+
             if (arg === 'info' && titleVideo !== '') {
                 // jika perintahnya /yt info
                 await client.sendText(from, `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`);
