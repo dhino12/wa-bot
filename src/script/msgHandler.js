@@ -166,6 +166,7 @@ const msgHandler = async (client, message) => {
                 await client.sendText(from, filePath);    
                 return;
             }
+            
             const fileName = filePath.split('/')[4];
             await client.sendFile(from, filePath, fileName, fileName);
             rmSync(filePath);
