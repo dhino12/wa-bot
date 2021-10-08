@@ -151,26 +151,28 @@ const msgHandler = async (client, message) => {
             ytData.optionSize = optionSize;
             ytData.from = from;
 
-            const filePath =  await ytDownloader(ytData, createWriteStream).catch(async (error) => {
-                // console.log(`errornya itu adalah :${error}`);
+            try {
+                const filePath =  await ytDownloader(ytData, createWriteStream);
+                 
+                console.log(`filePath  : ${filePath}`);
+                if (filePath !== undefined && !filePath.includes('.mp4')) { 
+                    await client.sendText(from, filePath);    
+                    return;
+                }
+                
+                const fileName = filePath.split('/')[4];
+                await client.sendFile(from, filePath, fileName, fileName);
+                rmSync(filePath);
+        
+            } catch (error) {                
                 if (error.message === 410) {
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id);    
                 }else {
-                    await client.sendText(from, `Error nya adalah : ${error}`, id);    
+                    await client.sendText(from, `${error}`, id);    
                 }
 
-                return;
-            });
-             
-            if (filePath !== undefined && !filePath.includes('.mp4')) { 
-                await client.sendText(from, filePath);    
-                return;
             }
             
-            const fileName = filePath.split('/')[4];
-            await client.sendFile(from, filePath, fileName, fileName);
-            rmSync(filePath);
-
             break;
 
         case onlyCommands['/kick']:
