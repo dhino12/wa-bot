@@ -8,8 +8,15 @@ const cookieYt = 'LOGIN_INFO=AFmmF2swRQIhAOa9HZz5PJq5rsUxqrNFP5Pzf9hLFn8QXqbAD8q
 
 async function ytInfo (arg, optionInfo, optionSize) {
 
+    console.log(`argument : ${arg}`);
+    if (arg === 'info' && titleVideo !== '') {
+        // jika perintahnya /yt info
+        console.log(titleVideo);
+        return `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`;
+    } 
+     
     if (!validateUrl(arg)) return
-        
+       
     const { videoDetails, formats } = await ytdl.getInfo(arg, {
         requestOptions: {
             header: {
@@ -19,11 +26,6 @@ async function ytInfo (arg, optionInfo, optionSize) {
     }).catch((e) => {
         return e
     });
-
-    if (arg === 'info' && videoDetails.title !== '') {
-        // jika perintahnya /yt info
-        return `Video : ${videoDetails.title}\nProses : *${percentDownload}%* downloaded`;
-    } 
 
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
@@ -49,6 +51,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `Video youtube dengan size ${optionSize} tidak tersedia, cek dengan /yt <link> info`;
     }
     higher.title = videoDetails.title;
+    titleVideo = videoDetails.title
 
     return higher
 }
@@ -58,6 +61,7 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     const higher = await ytInfo(arg, optionInfo, optionSize);
     console.log(`Higher isi : ${higher}`); 
+    console.log(`arg isi : ${arg}`); 
 
     if (typeof higher === 'string' && higher.startsWith('List')) {
         console.log(`Ya List`);
@@ -65,7 +69,7 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     }  
     
-    if (typeof higher === 'string' && !higher.startsWith('List')) {
+    if (typeof higher === 'string' && !higher.startsWith('List') ) {
         console.log(`bukan List`);
         throw higher; // output = error video;
     }
@@ -74,7 +78,7 @@ async function ytDownloader(dataObj, createWriteStream) {
     const filePath = `./media/tmp/video/${overcomeENOENT(higher.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
     
 
-    return new Promise((resolve,rejcet) => {
+    return new Promise((resolve, reject) => {
         ytdl(arg,  {
             quality: higher.itag
         }) 
@@ -86,7 +90,7 @@ async function ytDownloader(dataObj, createWriteStream) {
         .on('error', (e) => {
             console.log(e);
             startTime = 0;
-            rejcet(e);
+            reject(e);
         })
         .on('finish', async () => {
             resolve(filePath);
