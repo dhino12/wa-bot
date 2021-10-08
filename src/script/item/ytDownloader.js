@@ -1,3 +1,4 @@
+const e = require('cors');
 const ytdl = require('ytdl-core');
 const { overcomeENOENT, validateUrl } = require('./util');
 
@@ -42,11 +43,10 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `${percentDownload}% downloaded` + `\nproses download video *${titleVideo}* masih berlangsung, harap 1 per 1`;
     }
 
-    const bestQualityVideo = searchVideoBestQuality(formats)
-    
-    const higher = formats.filter(item => item.qualityLabel === `${
-        (optionSize !== undefined)? optionSize : bestQualityVideo[bestQualityVideo.length - 1].qualityLabel
-    }`)[0];
+    const bestQualityVideo = searchVideoBestQuality(formats);
+    const higher = formats.filter(item => {
+        item.qualityLabel === `${(optionSize !== undefined)? optionSize : bestQualityVideo[bestQualityVideo.length - 1]}`
+    })[0];
 
     if (higher === undefined) {
         startTime = 0;
