@@ -42,9 +42,11 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `${percentDownload}% downloaded` + `\nproses download video *${titleVideo}* masih berlangsung, harap 1 per 1`;
     }
 
+    const bestQualityVideo = searchVideoBestQuality(formats)
+    
     const higher = formats.filter(item => item.qualityLabel === `${
-        (optionSize !== undefined)? optionSize : searchVideoBestQuality(formats)[0].qualityLabel
-    }` && item.audioQuality !== undefined)[0];
+        (optionSize !== undefined)? optionSize : bestQualityVideo[bestQualityVideo.length - 1].qualityLabel
+    }`)[0];
 
     if (higher === undefined) {
         startTime = 0;
@@ -59,6 +61,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
 async function ytDownloader(dataObj, createWriteStream) {
     const { arg, optionInfo, optionSize } = dataObj;
 
+    ++startTime;
     const higher = await ytInfo(arg, optionInfo, optionSize);
     console.log(`Higher isi : ${higher}`); 
     console.log(`arg isi : ${arg}`); 
@@ -74,7 +77,6 @@ async function ytDownloader(dataObj, createWriteStream) {
         throw higher; // output = error video;
     }
     
-    ++startTime;
     const filePath = `./media/tmp/video/${overcomeENOENT(higher.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
     
 
@@ -100,22 +102,24 @@ async function ytDownloader(dataObj, createWriteStream) {
     
 }
 
-function infoVideoYt(formats) {
+function infoVideoYt(formats) { 
+    console.log(formats);
     return formats.map(video => { 
-        if(video.audioQuality !== undefined && video.qualityLabel !== undefined) {
+        if(video.audioQuality !== undefined && video.qualityLabel !== null) {
             return `\n${video.qualityLabel}`
-        } else {
-            if (video.qualityLabel !== undefined) {
+        } else { 
+            if (video.qualityLabel !== null && video.audioSampleRate === undefined) {
                 return `\n${video.qualityLabel} hanya video`
-            } else {
+            } else if (video.qualityLabel === null && video.audioSampleRate !== null) { 
                 return `\n${video.audioSampleRate / 100}/kbps hanya audio`
             }
+            
         }
     });
 }
 
 function searchVideoBestQuality (formats) {
-    return formats.filter(video => video.qualityLabel !== undefined && video.audioQuality !== undefined)
+    return formats.filter(video => video.qualityLabel !== null && video.audioQuality !== undefined)
 }
 
 module.exports = { ytDownloader }
