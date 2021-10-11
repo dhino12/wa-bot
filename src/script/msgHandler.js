@@ -12,7 +12,8 @@ const {
     mkdirSync,
     createWriteStream,
     statSync,
-    rmSync
+    rmSync,
+    writeFileSync
 } = require('fs');
  
 const {
@@ -26,8 +27,9 @@ const {
 } = require('./item/commands');
 
 const os = require('os');
-const e = require('cors');
+const ffmpeg = require('fluent-ffmpeg');
 const { ytDownloader } = require('./item/ytDownloader');
+const { toMp3 } = require('./item/mp3Converter');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -54,8 +56,6 @@ const msgHandler = async (client, message) => {
     const optionInfo = commands.split(' ')[3]; // info video
     let dataMessage = undefined;
     
-    // if (allCommands.filter(command => command != body || command != caption)) return;
-    
     if (quotedMsg) {
         dataMessage = quotedMsg;
         mimetype = dataMessage.mimetype;
@@ -63,6 +63,8 @@ const msgHandler = async (client, message) => {
     } else {
         dataMessage = message
     }
+    let mediaData = undefined;
+    let bufferBase64 = undefined;
 
     switch (command) {
         case onlyCommands['/hi']:
@@ -83,9 +85,9 @@ const msgHandler = async (client, message) => {
                     keepScale: true
                 })
             } else {
-                const mediaData = await decryptMedia(dataMessage, useragentOverride);
-                const imgBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
-                await client.sendImageAsSticker(from, imgBase64, {
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
+                bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                await client.sendImageAsSticker(from, bufferBase64, {
                     author: '',
                     circle: false,
                     keepScale: true
@@ -95,8 +97,8 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/stiker-nobg']:
-            const mediaData = await decryptMedia(dataMessage, useragentOverride);
-            const base64img = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+            mediaData = await decryptMedia(dataMessage, useragentOverride);
+            bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
             const outputFile = './media/image/noBg.png';
             const dirPath = './media/image';
 
@@ -107,7 +109,7 @@ const msgHandler = async (client, message) => {
             }
 
             const result = await removeBackgroundFromImageBase64({
-                base64img,
+                bufferBase64,
                 apiKey: 'QM3HY6Cy3hGQwbxC9sQhQHwX',
                 size: 'regular',
                 type: 'product',
@@ -128,10 +130,10 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/stiker-gif']:
             if (mimetype === 'video/mp4' && duration <= 10) {
-                const md = await decryptMedia(dataMessage, useragentOverride);
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
                 try {
-                    const fileBuffer = `data:${mimetype};base64,${md.toString('base64')}`;
-                    await client.sendMp4AsSticker(from, fileBuffer, {
+                    const bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                    await client.sendMp4AsSticker(from, bufferBase64, {
                         crop: false
                     }, {
                         keepScale: true
@@ -169,8 +171,7 @@ const msgHandler = async (client, message) => {
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id);    
                 }else {
                     await client.sendText(from, `${error}`, id);    
-                }
-
+                } 
             } 
             break;
 
@@ -185,6 +186,21 @@ const msgHandler = async (client, message) => {
                 }
             }
             break;
+
+        case onlyCommands['/mp3']:
+            if(mimetype !== 'video/mp4') {
+                await client.sendText(from, 'oops... file bukan mp4')
+                return
+            }
+            mediaData = decryptMedia(dataMessage, useragentOverride); 
+            bufferBase64 = `data:${mimetype};base64,${dataMedia.toString('base64')}`;
+            const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
+            const fileOut = `./media/tmp/audio/audio.mp3`
+            writeFileSync(filePath, bufferBase64)
+
+            toMp3(filePath, fileOut);
+
+        break
 
         case onlyCommands['/help']:
             const allCommands = Object.keys(desc).map((command, i) => `*${command}* : ${Object.values(desc)[i]}\n`);
