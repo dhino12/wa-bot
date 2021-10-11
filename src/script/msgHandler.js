@@ -171,8 +171,7 @@ const msgHandler = async (client, message) => {
                     await client.sendText(from, `${error}`, id);    
                 }
 
-            }
-            
+            } 
             break;
 
         case onlyCommands['/kick']:
