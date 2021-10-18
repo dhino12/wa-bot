@@ -13,7 +13,8 @@ const {
     createWriteStream,
     statSync,
     rmSync,
-    writeFileSync
+    writeFileSync,
+    writeFile
 } = require('fs');
  
 const {
@@ -61,6 +62,7 @@ const msgHandler = async (client, message) => {
         mimetype = dataMessage.mimetype;
         duration = dataMessage.duration;
     } else {
+        console.log('ELSE');
         dataMessage = message
     }
     let mediaData = undefined;
@@ -132,7 +134,7 @@ const msgHandler = async (client, message) => {
             if (mimetype === 'video/mp4' && duration <= 10) {
                 mediaData = await decryptMedia(dataMessage, useragentOverride);
                 try {
-                    const bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                    bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
                     await client.sendMp4AsSticker(from, bufferBase64, {
                         crop: false
                     }, {
@@ -193,20 +195,23 @@ const msgHandler = async (client, message) => {
                 return
             }
 
+            
             const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
+
+            if (!existsSync(filePath)) mkdirSync(filePath)
+
             let fileOut = `./media/tmp/audio/audio.mp3`
             if (arg !== undefined) {
                 fileOut = `./media/tmp/audio/${arg}.mp3`
             }
-            mediaData = decryptMedia(dataMessage, useragentOverride); 
-            bufferBase64 = `data:${mimetype};base64,${dataMedia.toString('base64')}`;
-            
-            writeFileSync(filePath, bufferBase64)
-            
-            toMp3(filePath, fileOut);
+            mediaData = await decryptMedia(dataMessage, useragentOverride); 
+            writeFileSync(filePath, mediaData); 
+            toMp3(filePath, fileOut); 
             
             const fileName = fileOut.split('/')[4];
-            await client.sendFile(from, filePath, fileName, fileName);
+            await client.sendFile(from, fileOut, fileName, fileName);
+            rmSync(fileOut);
+            rmSync(filePath);
 
         break
 
