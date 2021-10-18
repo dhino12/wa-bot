@@ -61,8 +61,7 @@ const msgHandler = async (client, message) => {
         dataMessage = quotedMsg;
         mimetype = dataMessage.mimetype;
         duration = dataMessage.duration;
-    } else {
-        console.log('ELSE');
+    } else { 
         dataMessage = message
     }
     let mediaData = undefined;
