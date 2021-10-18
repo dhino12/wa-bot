@@ -192,14 +192,21 @@ const msgHandler = async (client, message) => {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
             }
+
+            const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
+            let fileOut = `./media/tmp/audio/audio.mp3`
+            if (arg !== undefined) {
+                fileOut = `./media/tmp/audio/${arg}.mp3`
+            }
             mediaData = decryptMedia(dataMessage, useragentOverride); 
             bufferBase64 = `data:${mimetype};base64,${dataMedia.toString('base64')}`;
-            const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
-            const fileOut = `./media/tmp/audio/audio.mp3`
+            
             writeFileSync(filePath, bufferBase64)
-
+            
             toMp3(filePath, fileOut);
             
+            const fileName = fileOut.split('/')[4];
+            await client.sendFile(from, filePath, fileName, fileName);
 
         break
 
