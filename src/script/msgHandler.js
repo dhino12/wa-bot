@@ -193,10 +193,10 @@ const msgHandler = async (client, message) => {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
             } 
-            
+
             const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
 
-            if (!existsSync(filePath)) mkdirSync(filePath)
+            // if (!existsSync(filePath)) mkdirSync(filePath)
 
             let fileOut = `./media/tmp/audio/audio.mp3`
             if (arg !== undefined) {
