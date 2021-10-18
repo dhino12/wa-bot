@@ -192,8 +192,7 @@ const msgHandler = async (client, message) => {
             if(mimetype !== 'video/mp4') {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
-            }
-
+            } 
             
             const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
 
