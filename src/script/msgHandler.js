@@ -189,23 +189,26 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/mp3']:
+            if (arg === 'info') {
+                const mp3Convert = await toMp3(undefined, undefined, arg);
+                await client.sendText(from, mp3Convert);
+                return
+            }
+            
             if(mimetype !== 'video/mp4') {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
-            } 
-
+            }
             const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
-
-            // if (!existsSync(filePath)) mkdirSync(filePath)
-
             let fileOut = `./media/tmp/audio/audio.mp3`
-            if (arg !== undefined) {
+
+            if (arg !== undefined && arg !== 'info') {
                 fileOut = `./media/tmp/audio/${arg}.mp3`
             }
             mediaData = await decryptMedia(dataMessage, useragentOverride); 
             writeFileSync(filePath, mediaData); 
-            toMp3(filePath, fileOut); 
-            
+            await toMp3(filePath, fileOut, arg);  
+             
             const fileName = fileOut.split('/')[4];
             await client.sendFile(from, fileOut, fileName, fileName);
             rmSync(fileOut);
