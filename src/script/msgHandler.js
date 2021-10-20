@@ -31,6 +31,7 @@ const os = require('os');
 const ffmpeg = require('fluent-ffmpeg');
 const { ytDownloader } = require('./item/ytDownloader');
 const { toMp3 } = require('./item/mp3Converter');
+const Axios = require('axios');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -93,8 +94,7 @@ const msgHandler = async (client, message) => {
                     circle: false,
                     keepScale: true
                 });
-            }
-
+            } 
             break;
 
         case onlyCommands['/stiker-nobg']:
@@ -143,7 +143,13 @@ const msgHandler = async (client, message) => {
                     console.log(error.data);
                     await client.reply(from, 'File membutuhkan waktu terlalu lama, bisa diulangi kembali', id);
                 }
-            } 
+            } else {
+                if (mimetype !== 'video/mp4') {
+                    await client.reply(from, 'oops ini bukan video', id) 
+                    return
+                }
+                await client.reply(from, 'oops file melebihi aturan durasi *10 detik*', id)
+            }
             break;
 
         case onlyCommands['/yt']:
@@ -158,7 +164,7 @@ const msgHandler = async (client, message) => {
                 const filePath =  await ytDownloader(ytData, createWriteStream);
                  
                 console.log(`filePath  : ${filePath}`);
-                if (filePath !== undefined && !filePath.includes('.mp4')) { 
+                if (filePath !== undefined && !filePath.includes('.mp4') && !filePath.includes('.webm')) { 
                     await client.sendText(from, filePath);    
                     return;
                 }
@@ -169,11 +175,25 @@ const msgHandler = async (client, message) => {
         
             } catch (error) {                
                 if (error.message === 410) {
-                    await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id);    
+                    await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id); 
                 }else {
                     await client.sendText(from, `${error}`, id);    
                 } 
             } 
+            break;
+
+        case onlyCommands['/fb']:
+            console.log('hello');
+            try {
+                const response = await Axios({
+                    method: 'GET',
+                    url: 'https://unsplash.com/photos/hE0nmTffKtM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM0NzM2Njg1&force=true',
+                    responseType: 'stream'
+                })
+                console.log(response); 
+            } catch (error) {
+                console.log(error);
+            }
             break;
 
         case onlyCommands['/kick']:
@@ -221,8 +241,7 @@ const msgHandler = async (client, message) => {
                 
                 if (error.search("Progress:")) await client.sendText(from, error) 
             }
-
-        break
+        break;
 
         case onlyCommands['/help']:
             const allCommands = Object.keys(desc).map((command, i) => `*${command}* : ${Object.values(desc)[i]}\n`);
