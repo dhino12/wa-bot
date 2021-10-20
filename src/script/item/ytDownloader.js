@@ -66,6 +66,7 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     }  
     if (typeof higher === 'string' && !higher.startsWith('List') ) {
+        startTime = 0
         throw higher; // output = error video;
     }
     
