@@ -205,14 +205,22 @@ const msgHandler = async (client, message) => {
             if (arg !== undefined && arg !== 'info') {
                 fileOut = `./media/tmp/audio/${arg}.mp3`
             }
-            mediaData = await decryptMedia(dataMessage, useragentOverride); 
-            writeFileSync(filePath, mediaData); 
-            await toMp3(filePath, fileOut, arg);  
-             
-            const fileName = fileOut.split('/')[4];
-            await client.sendFile(from, fileOut, fileName, fileName);
-            rmSync(fileOut);
-            rmSync(filePath);
+
+            try {
+                mediaData = await decryptMedia(dataMessage, useragentOverride); 
+                writeFileSync(filePath, mediaData); 
+                await toMp3(filePath, fileOut, arg);  
+                    
+                const fileName = fileOut.split('/')[4];
+                await client.sendFile(from, fileOut, fileName, fileName);
+                rmSync(fileOut);
+                rmSync(filePath);   
+            } catch (error) {
+                console.log(error.search("Progress:"));
+                console.log(error);
+                
+                if (error.search("Progress:")) await client.sendText(from, error) 
+            }
 
         break
 
