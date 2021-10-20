@@ -28,10 +28,8 @@ const {
 } = require('./item/commands');
 
 const os = require('os');
-const ffmpeg = require('fluent-ffmpeg');
 const { ytDownloader } = require('./item/ytDownloader');
 const { toMp3 } = require('./item/mp3Converter');
-const Axios = require('axios');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -184,16 +182,16 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/fb']:
             console.log('hello');
-            try {
-                const response = await Axios({
-                    method: 'GET',
-                    url: 'https://unsplash.com/photos/hE0nmTffKtM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM0NzM2Njg1&force=true',
-                    responseType: 'stream'
-                })
-                console.log(response); 
-            } catch (error) {
-                console.log(error);
-            }
+            // try {
+            //     const response = await Axios({
+            //         method: 'GET',
+            //         url: 'https://unsplash.com/photos/hE0nmTffKtM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM0NzM2Njg1&force=true',
+            //         responseType: 'stream'
+            //     })
+            //     console.log(response); 
+            // } catch (error) {
+            //     console.log(error);
+            // }
             break;
 
         case onlyCommands['/kick']:
