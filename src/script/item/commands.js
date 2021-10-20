@@ -1,4 +1,5 @@
 const desc = {
+    '/fb': 'Download video facebook',
     '/hi': 'katakan halo',
     '/kick': 'Kick seseorang',
     '/mp3': 'Convert ke mp3',
