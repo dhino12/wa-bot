@@ -30,6 +30,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
 
+    console.log(videoDetails);
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
@@ -101,8 +102,7 @@ function infoVideoYt(formats) {
                 return `\n${video.qualityLabel} hanya video`
             } else if (video.qualityLabel === null && video.audioSampleRate !== null) { 
                 return `\n${video.audioSampleRate / 100}/kbps hanya audio`
-            }
-            
+            } 
         }
     });
 }
