@@ -158,8 +158,10 @@ const msgHandler = async (client, message) => {
             ytData.optionSize = optionSize;
             ytData.from = from;
 
+            if (!validateUrl(arg) && arg !== 'info') return await client.sendText(from, 'oops sepertinya anda typo gunakan /yt info atau /yt <link>')
+
             try {
-                const filePath =  await ytDownloader(ytData, createWriteStream);
+                let filePath =  await ytDownloader(ytData, createWriteStream);
                  
                 console.log(`filePath  : ${filePath}`);
                 if (filePath !== undefined && !filePath.includes('.mp4') && !filePath.includes('.webm')) { 
@@ -167,7 +169,9 @@ const msgHandler = async (client, message) => {
                     return;
                 }
                 
-                const fileName = filePath.split('/')[4];
+                const fileName = filePath.split(';')[0];
+                filePath = filePath.split(';')[1];
+                console.log(filePath);
                 await client.sendFile(from, filePath, fileName, fileName);
                 rmSync(filePath);
         
