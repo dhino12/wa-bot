@@ -29,8 +29,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         // jika perintahnya /yt <link> info
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
-
-    console.log(videoDetails);
+ 
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
@@ -41,9 +40,9 @@ async function ytInfo (arg, optionInfo, optionSize) {
     }
 
     const bestQualityVideo = searchVideoBestQuality(formats);
-    const higher = formats.filter(item => item.qualityLabel === `${
-        (optionSize !== undefined)? optionSize : bestQualityVideo[bestQualityVideo.length - 1].qualityLabel
-    }`)[0];
+    console.log(bestQualityVideo[bestQualityVideo.length - 1]);
+    console.log(`================= ^^^^^^^ =====================`);
+    const higher = bestQualityVideo[bestQualityVideo.length - 1]
 
     if (higher === undefined) {
         startTime = 0;
@@ -71,7 +70,7 @@ async function ytDownloader(dataObj, createWriteStream) {
         throw higher; // output = error video;
     }
     
-    const filePath = `./media/tmp/video/${overcomeENOENT(higher.title)}.${higher.mimeType.split(';')[0].split('/')[1]}`
+    const filePath = `./media/tmp/video/tmpVideo.${higher.mimeType.split(';')[0].split('/')[1]}`
 
     return new Promise((resolve, reject) => {
         ytdl(arg,  {
@@ -87,7 +86,7 @@ async function ytDownloader(dataObj, createWriteStream) {
             reject(e);
         })
         .on('finish', async () => {
-            resolve(filePath);
+            resolve(`${higher.title};${filePath}`);
             startTime = 0;
         })    
     })
