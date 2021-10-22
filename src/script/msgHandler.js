@@ -4,7 +4,8 @@ const {
 
 const {
     removeBackgroundFromImageBase64,
-    RemoveBgResult
+    RemoveBgResult,
+    removeBackgroundFromImageFile
 } = require('remove.bg');
 
 const {
@@ -96,30 +97,35 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/stiker-nobg']:
-            mediaData = await decryptMedia(dataMessage, useragentOverride);
-            bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
-            const outputFile = './media/image/noBg.png';
-            const dirPath = './media/image';
+            try {
+                const outputFile = './media/image/noBg.png';
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
+                bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                const dirPath = './media/image';
 
-            if (!existsSync(dirPath)) {
-                mkdirSync(dirPath, {
-                    recursive: true
+                if (!existsSync(dirPath)) {
+                    mkdirSync(dirPath, {
+                        recursive: true
+                    });
+                }
+
+                const result = await removeBackgroundFromImageBase64({
+                    base64img: bufferBase64,
+                    apiKey: 'QM3HY6Cy3hGQwbxC9sQhQHwX',
+                    size: 'regular',
+                    type: 'product',
+                    outputFile
                 });
+                await writeFile(outputFile, result.base64img);
+                await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
+                    author: '',
+                    circle: false,
+                    keepScale: true
+                });
+                rmSync(outputFile);
+            } catch (error) {
+                console.log(error);
             }
-
-            const result = await removeBackgroundFromImageBase64({
-                bufferBase64,
-                apiKey: 'QM3HY6Cy3hGQwbxC9sQhQHwX',
-                size: 'regular',
-                type: 'product',
-                outputFile
-            });
-            await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
-                author: '',
-                circle: false,
-                keepScale: true
-            });
-            rmSync(outputFile);
             // nonaktif untuk menyimpan gambar yang di remove backgroundnya
             // await fs.writeFile(outputFile, result.base64img, (err) => {
             //     if(err) throw err
