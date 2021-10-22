@@ -115,8 +115,7 @@ const msgHandler = async (client, message) => {
                     size: 'regular',
                     type: 'product',
                     outputFile
-                });
-                await writeFile(outputFile, result.base64img);
+                }); 
                 await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
                     author: '',
                     circle: false,
