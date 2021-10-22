@@ -40,8 +40,6 @@ async function ytInfo (arg, optionInfo, optionSize) {
     }
 
     const bestQualityVideo = searchVideoBestQuality(formats);
-    console.log(bestQualityVideo[bestQualityVideo.length - 1]);
-    console.log(`================= ^^^^^^^ =====================`);
     const higher = bestQualityVideo[bestQualityVideo.length - 1]
 
     if (higher === undefined) {
