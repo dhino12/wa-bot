@@ -30,6 +30,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
  
+    console.log(videoDetails);
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
@@ -45,8 +46,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
     if (higher === undefined) {
         startTime = 0;
         return `Video youtube dengan size ${optionSize} tidak tersedia `;
-    }
-    console.log(higher);
+    } 
     higher.title = videoDetails.title;
     titleVideo = videoDetails.title
 
