@@ -178,9 +178,10 @@ const msgHandler = async (client, message) => {
                 filePath = filePath.split(';')[1];
                 console.log(filePath);
                 await client.sendFile(from, filePath, fileName, fileName);
-                rmSync(filePath);
+                // rmSync(filePath);
         
-            } catch (error) {                
+            } catch (error) {      
+                console.log(error);          
                 if (error.message === 410) {
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id); 
                 }else {
@@ -243,7 +244,6 @@ const msgHandler = async (client, message) => {
                 rmSync(fileOut);
                 rmSync(filePath);   
             } catch (error) {
-                console.log(error.search("Progress:"));
                 console.log(error);
                 
                 if (error.search("Progress:")) await client.sendText(from, error) 
