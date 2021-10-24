@@ -17,10 +17,12 @@ async function ytInfo (arg, optionInfo, optionSize) {
 
     if (!validateUrl(arg)) return
        
-    const { videoDetails, formats } = await ytdl.getInfo(arg).catch((e) => {
+    const fb = await ytdl.getInfo(arg).catch((e) => {
         return e
     });
 
+    console.log(fb);
+    return;
     if (videoDetails === undefined) {
         videoDetails = await ytdl.getInfo(arg).player_response.microformat.playerMicroformatRenderer.catch((e) => { return e})
         console.log(videoDetails);
