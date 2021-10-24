@@ -6,6 +6,7 @@ let startTime = 0;
 let percentDownload = 0;
 let titleVideo = ''
 const cookieYt = 'LOGIN_INFO=AFmmF2swRQIhAOa9HZz5PJq5rsUxqrNFP5Pzf9hLFn8QXqbAD8qseHcFAiB1UkLFZHiOQMjLpehU-WSX8QP0_fXJzSxDGt2BNg84sg:QUQ3MjNmeHVDWVUxWXZzUHRuOGNIdnlMRWhjbnA1alpCRHJRem9ZY1FicEJxUzJlTnZTbEJ1VTF4RTlFOV92MXZBbVhtc0daRlI0dng2LVdSZU1Ra0ZNYTg0cnJkb3l2SjBKWWl0RmItbGNQRWk1M0g5Wm1Dd3FzaWJ6ZDEwdV9GZUlPX1FMdG81S2F4bTBVcFJPRTIzTlZGRWdOaFpYV2dB; VISITOR_INFO1_LIVE=hY4uyJRyYuk; PREF=tz=Asia.Jakarta; SID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwWuUTqcdOPSSQfPK3CU2gbw.; __Secure-1PSID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwLh37J1fWdhm_-oaWGsBLpw.; __Secure-3PSID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwQhZxBddeN9wLnu9jsqXYeA.; HSID=Ay-Ql0STi6eDw2MGm; SSID=AumIMA47UOMwA1NaF; APISID=YPxrSF99A5p2kI8c/AgPobtWPScIpWNn9H; SAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; __Secure-1PAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; __Secure-3PAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; YSC=nEdeRoTG6HA; SIDCC=AJi4QfEiKPPhRusxD1TrjPvB94heHq7FRSXCvwTAKYnIqOsFOlZG8KeJM5eMnP3hkEaj0mUKkg; __Secure-3PSIDCC=AJi4QfFhdrbvwUAoxREMqKqR-ZDuDMUE6nH8kR3K3o9m7nXOTmR2Vxdfj_qTEUsnqaulESi-IA'
+const fs = require('fs')
 
 async function ytInfo (arg, optionInfo, optionSize) {
     if (arg === 'info' && titleVideo !== '') {
@@ -20,11 +21,16 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return e
     });
 
+    if (videoDetails === undefined) {
+        videoDetails = await ytdl.getInfo(arg).player_response.videoDetails.catch((e) => { return e})
+        console.log(videoDetails);
+    }
+
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
-  
+
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
