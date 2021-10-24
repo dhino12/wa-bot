@@ -22,10 +22,11 @@ async function ytInfo (arg, optionInfo, optionSize) {
     });
 
     if (videoDetails === undefined) {
-        videoDetails = await ytdl.getInfo(arg).player_response.microformat.catch((e) => { return e})
+        videoDetails = await ytdl.getInfo(arg).player_response.microformat.playerMicroformatRenderer.catch((e) => { return e})
         console.log(videoDetails);
     }
 
+    console.log(formats);
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
