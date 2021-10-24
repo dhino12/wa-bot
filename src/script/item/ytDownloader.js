@@ -22,7 +22,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
     });
 
     if (videoDetails === undefined) {
-        videoDetails = await ytdl.getInfo(arg).player_response.videoDetails.catch((e) => { return e})
+        videoDetails = await ytdl.getInfo(arg).player_response.microformat.catch((e) => { return e})
         console.log(videoDetails);
     }
 
