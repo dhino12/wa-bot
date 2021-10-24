@@ -20,10 +20,8 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return e
     });
 
-    if (videoDetails === undefined) throw 410
-
-    console.log('-------------- formats ----');
-    console.log(formats);
+    if (videoDetails === undefined) throw 410 
+    
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
