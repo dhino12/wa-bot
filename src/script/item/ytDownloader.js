@@ -5,7 +5,7 @@ const { validateUrl } = require('./util');
 let startTime = 0;
 let percentDownload = 0;
 let titleVideo = ''
-const cookieYt = 'LOGIN_INFO=AFmmF2swRQIhAOa9HZz5PJq5rsUxqrNFP5Pzf9hLFn8QXqbAD8qseHcFAiB1UkLFZHiOQMjLpehU-WSX8QP0_fXJzSxDGt2BNg84sg:QUQ3MjNmeHVDWVUxWXZzUHRuOGNIdnlMRWhjbnA1alpCRHJRem9ZY1FicEJxUzJlTnZTbEJ1VTF4RTlFOV92MXZBbVhtc0daRlI0dng2LVdSZU1Ra0ZNYTg0cnJkb3l2SjBKWWl0RmItbGNQRWk1M0g5Wm1Dd3FzaWJ6ZDEwdV9GZUlPX1FMdG81S2F4bTBVcFJPRTIzTlZGRWdOaFpYV2dB; VISITOR_INFO1_LIVE=hY4uyJRyYuk; PREF=tz=Asia.Jakarta; SID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwWuUTqcdOPSSQfPK3CU2gbw.; __Secure-1PSID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwLh37J1fWdhm_-oaWGsBLpw.; __Secure-3PSID=CggAK0u6Zh7Oxr8-bSZlv47tgql7k_Q3JHjTHpVHekrRspzwQhZxBddeN9wLnu9jsqXYeA.; HSID=Ay-Ql0STi6eDw2MGm; SSID=AumIMA47UOMwA1NaF; APISID=YPxrSF99A5p2kI8c/AgPobtWPScIpWNn9H; SAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; __Secure-1PAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; __Secure-3PAPISID=Oaz5GNwhoy5uF6ei/AWvaMRlNVDQxR7rch; YSC=nEdeRoTG6HA; SIDCC=AJi4QfEiKPPhRusxD1TrjPvB94heHq7FRSXCvwTAKYnIqOsFOlZG8KeJM5eMnP3hkEaj0mUKkg; __Secure-3PSIDCC=AJi4QfFhdrbvwUAoxREMqKqR-ZDuDMUE6nH8kR3K3o9m7nXOTmR2Vxdfj_qTEUsnqaulESi-IA'
+const cookieYt = 'APISID=QWfHd-O8geWNDkdm/A9VNZxBwqUK590wlN;LOGIN_INFO=AFmmF2swRQIhAOw0s1O3RlWdqv-3wanIGqzofrEjhhrFNSBccHojd954AiAhX51JopUhUBaybUgSLKW2teR1sQ_Uoh2J3_ZFPpMcvA:QUQ3MjNmeFIxbS1vUVpkQnlVenlWRHdIN01OMWstNTJ4LXU4TzJxTUh1Nzg2Wkp4Z0pRYXZCMXZqV3lRSmE2UUtmbWJEalpHMzhEd2ZIc0JLSXBGU0l5NU9pOGJrYkZnLVRKbFBhblo5Mkw0cjlza3NDR1ZvZ2ppMDdENlNwdF9UME8td0lLNy1DRDBYazZXbVdTLUlxaVM2NVJ1MXZnWXhR;PREF=tz=Asia.Jakarta;SAPISID=rJBeomQ_RtKptRPG/A2eSWuxGRFwgYiFeW;SID=CwgAK0JHm7ME-XzyP2Lj9nCC3vnHCzos46XSEJEE8sr24fQOUdfESD4ZnP-OcPEigm4aDQ.;SIDCC=AJi4QfGI62VP78wEANiK_jDw64JlJg5_ZzI_3FwagzMGRpjnJn_jTjhR4X16uYXAbl5RH2nILYQ; '
 
 async function ytInfo (arg, optionInfo, optionSize) {
     if (arg === 'info' && titleVideo !== '') {
@@ -72,7 +72,12 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     return new Promise((resolve, reject) => {
         ytdl(arg,  {
-            quality: higher.itag
+            quality: higher.itag,
+            requestOptions: {
+                header: {
+                    cookieYt
+                }
+            }
         }) 
         .on('progress', (chunkLength, downloaded, total) => {
             percentDownload = ((downloaded / total) * 100).toFixed(2);
