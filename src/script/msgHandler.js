@@ -181,7 +181,8 @@ const msgHandler = async (client, message) => {
                 // rmSync(filePath);
         
             } catch (error) {      
-                console.log(error);          
+                console.log(error.message);          
+                console.log(error.statusCode);          
                 if (error.message === 410) {
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id); 
                 }else {
