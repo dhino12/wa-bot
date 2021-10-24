@@ -1,6 +1,6 @@
 const e = require('cors');
 const ytdl = require('ytdl-core');
-const { overcomeENOENT, validateUrl } = require('./util');
+const { validateUrl } = require('./util');
 
 let startTime = 0;
 let percentDownload = 0;
@@ -30,7 +30,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
  
-    console.log(videoDetails);
+    console.log(await ytdl.getInfo(arg));
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
