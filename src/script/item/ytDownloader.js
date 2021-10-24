@@ -5,7 +5,7 @@ const { validateUrl } = require('./util');
 let startTime = 0;
 let percentDownload = 0;
 let titleVideo = ''
-const cookieYt = 'APISID=QWfHd-O8geWNDkdm/A9VNZxBwqUK590wlN;LOGIN_INFO=AFmmF2swRQIhAOw0s1O3RlWdqv-3wanIGqzofrEjhhrFNSBccHojd954AiAhX51JopUhUBaybUgSLKW2teR1sQ_Uoh2J3_ZFPpMcvA:QUQ3MjNmeFIxbS1vUVpkQnlVenlWRHdIN01OMWstNTJ4LXU4TzJxTUh1Nzg2Wkp4Z0pRYXZCMXZqV3lRSmE2UUtmbWJEalpHMzhEd2ZIc0JLSXBGU0l5NU9pOGJrYkZnLVRKbFBhblo5Mkw0cjlza3NDR1ZvZ2ppMDdENlNwdF9UME8td0lLNy1DRDBYazZXbVdTLUlxaVM2NVJ1MXZnWXhR;PREF=tz=Asia.Jakarta;SAPISID=rJBeomQ_RtKptRPG/A2eSWuxGRFwgYiFeW;SID=CwgAK0JHm7ME-XzyP2Lj9nCC3vnHCzos46XSEJEE8sr24fQOUdfESD4ZnP-OcPEigm4aDQ.;SIDCC=AJi4QfGI62VP78wEANiK_jDw64JlJg5_ZzI_3FwagzMGRpjnJn_jTjhR4X16uYXAbl5RH2nILYQ; '
+const cookieYt = 'APISID=sec; LOGIN_INFO=sec; PREF=f1=50000000&hl=en; SAPISID=sec; SID=sec; SIDCC=sec; SSID=sec; VISITOR_INFO1_LIVE=sec; __Secure-3PAPISID=sec; __Secure-3PSID=sec; __Secure-APISID=sec; __Secure-HSID=sec; __Secure-SSID=sec; s_gl=sec'
 
 async function ytInfo (arg, optionInfo, optionSize) {
     if (arg === 'info' && titleVideo !== '') {

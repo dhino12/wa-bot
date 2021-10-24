@@ -183,7 +183,7 @@ const msgHandler = async (client, message) => {
             } catch (error) {      
                 console.log(error.message);          
                 console.log(error.statusCode);          
-                if (error.message === 410) {
+                if (error.statusCode === 410) {
                     await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id); 
                 }else {
                     await client.sendText(from, `${error}`, id);    
