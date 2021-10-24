@@ -26,6 +26,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         console.log(videoDetails);
     }
 
+    console.log('-------------- formats ----');
     console.log(formats);
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
