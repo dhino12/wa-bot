@@ -24,8 +24,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         // jika perintahnya /yt <link> info
         return `List Size Video\n============== ${infoVideoYt(formats)}`;
     }
- 
-    console.log(await ytdl.getInfo(arg));
+  
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
         `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
