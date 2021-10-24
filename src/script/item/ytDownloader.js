@@ -16,13 +16,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
 
     if (!validateUrl(arg)) return
        
-    const { videoDetails, formats } = await ytdl.getInfo(arg, {
-        requestOptions: {
-            header: {
-                cookie: cookieYt
-            }
-        }
-    }).catch((e) => {
+    const { videoDetails, formats } = await ytdl.getInfo(arg).catch((e) => {
         return e
     });
 
@@ -73,12 +67,7 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     return new Promise((resolve, reject) => {
         ytdl(arg,  {
-            quality: higher.itag,
-            requestOptions: {
-                header: {
-                    cookieYt
-                }
-            }
+            quality: higher.itag
         }) 
         .on('progress', (chunkLength, downloaded, total) => {
             percentDownload = ((downloaded / total) * 100).toFixed(2);
