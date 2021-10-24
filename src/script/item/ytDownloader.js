@@ -13,6 +13,7 @@ async function ytInfo (arg, optionInfo, optionSize) {
         return `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`;
     } 
      
+
     if (!validateUrl(arg)) return
        
     const { videoDetails, formats } = await ytdl.getInfo(arg, {
