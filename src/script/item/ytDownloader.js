@@ -16,7 +16,13 @@ async function ytInfo (arg, optionInfo, optionSize) {
 
     if (!validateUrl(arg)) return
        
-    const { videoDetails, formats } = await ytdl.getInfo(arg).catch((e) => {
+    const { videoDetails, formats } = await ytdl.getInfo(arg,  {
+        requestOptions: {
+            header: {
+                cookie: cookieYt
+            }
+        }
+    }).catch((e) => {
         return e
     });
 
