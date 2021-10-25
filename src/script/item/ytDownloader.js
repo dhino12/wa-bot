@@ -23,10 +23,14 @@ async function ytInfo (arg, optionInfo, optionSize) {
             }
         }
     }).catch((e) => {
+        startTime = 0
         return e
     });
 
-    if (videoDetails === undefined) throw 410 
+    if (videoDetails === undefined) {
+        startTime = 0
+        throw 410 
+    }
     
     if( optionInfo === 'info' || optionSize === 'info') {
         // jika perintahnya /yt <link> info
