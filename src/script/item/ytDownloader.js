@@ -62,6 +62,8 @@ async function ytInfo (arg, optionInfo, optionSize) {
 async function ytDownloader(dataObj, createWriteStream) {
     const { arg, optionInfo, optionSize } = dataObj;
 
+    if (startTime === 0) return "Maaf anda belum mendownload apapun"
+
     ++startTime;
     const higher = await ytInfo(arg, optionInfo, optionSize);
 
