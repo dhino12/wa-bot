@@ -48,6 +48,7 @@ const msgHandler = async (client, message) => {
         mentionedJidList
     } = message;
 
+    if (!`${body}`.includes("/") && (!`${caption}`.search("/") !== 0)) return
     // if (!caption.search('/') && !validateUrl(caption)) return;
 
     const commands = caption || body;
