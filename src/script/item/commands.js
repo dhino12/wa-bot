@@ -3,6 +3,7 @@ const desc = {
     '/hi': 'katakan halo',
     '/kick': 'Kick seseorang',
     '/mp3': 'Convert ke mp3',
+    '/show': 'Tampilkan pesan terhapus',
     '/stiker': 'membuat stiker dengan gambar',
     '/stiker-nobg': 'membuat stiker tanpa background',
     '/stiker-gif': 'membuat stiker dengan video',
