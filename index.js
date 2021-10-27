@@ -36,7 +36,13 @@ create({
 
 function start(client) {
     client.onMessage(async message => {
-        msgHandler(client, message);
+        await msgHandler(client, message);
+    })
+
+    client.onMessageDeleted(async (message) => {
+        message.msgDelete = true
+        console.log(message);
+        await msgHandler(client, message)
     })
 }
 
