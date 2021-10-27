@@ -15,7 +15,8 @@ const {
     statSync,
     rmSync,
     writeFileSync,
-    writeFile
+    writeFile,
+    readFileSync
 } = require('fs');
  
 const {
@@ -45,8 +46,28 @@ const msgHandler = async (client, message) => {
         id,
         isMedia,
         isGroupMsg,
-        mentionedJidList
+        mentionedJidList,
+        msgDelete,
+        type,
+        to
     } = message;
+
+    if (msgDelete === true) {
+        const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
+        const msgRecovers = JSON.parse(file);
+
+        console.log(msgRecovers);
+        const date = new Date()
+        const dataMessage = {
+            id:to, 
+            body, 
+            type, 
+            time:`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, 
+            date:`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+        }
+        msgRecovers.push(dataMessage)
+        writeFileSync('./src/script/lib/msgRecover.json', JSON.stringify(msgRecovers))
+    }
 
     if (!`${body}`.includes("/") && (!`${caption}`.search("/") !== 0)) return
     // if (!caption.search('/') && !validateUrl(caption)) return;
@@ -250,6 +271,25 @@ const msgHandler = async (client, message) => {
                 if (error.search("Progress:")) await client.sendText(from, error) 
             }
         break;
+
+        case onlyCommands['/show']:
+            const readMsgRecover = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
+            const msgRecover = JSON.parse(readMsgRecover)
+            const msgRecoverUser = msgRecover.filter(user => user.id == `${mentionedJidList[0]}`)
+            let msgTmpSendText = ""
+            msgRecoverUser.forEach(msgUser => {
+                if (msgUser.type === 'image') {
+                    msgTmpSendText += `pesan ini adalah gambar, gunakan /showByImage\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
+                    
+                } else {
+                    msgTmpSendText += `
+                    Pesan: ${msgUser.body}\n
+                    \`\`\`Waktu: ${msgUser.time}\`\`\`\n
+                    ================\n`
+                }
+            })
+            client.sendText(from, msgTmpSendText)
+            break;
 
         case onlyCommands['/help']:
             const allCommands = Object.keys(desc).map((command, i) => `*${command}* : ${Object.values(desc)[i]}\n`);
