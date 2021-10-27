@@ -1,3 +1,3 @@
 {
-    "ignore": ["session.data.json"]
+    "ignore": ["session.data.json", "src/script/lib/msgRecover.json"]
 }
