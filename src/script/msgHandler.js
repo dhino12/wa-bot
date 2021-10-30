@@ -278,17 +278,23 @@ const msgHandler = async (client, message) => {
             const msgRecoverUser = msgRecover.filter(user => user.id == `${mentionedJidList[0]}`)
             let msgTmpSendText = ""
             msgRecoverUser.forEach(msgUser => {
-                if (msgUser.type === 'image') {
-                    msgTmpSendText += `pesan ini adalah gambar, gunakan /showByImage\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
+                if (msgUser.type === 'image' && msgUser.type === arg) {
+                    msgTmpSendText += `pesan ini adalah gambar, gunakan /show image\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
                     
-                } else {
+                } 
+
+                if (msgUser.type === 'video' && msgUser.type === optionSize) {
+                    msgTmpSendText += `pesan ini adalah gambar, gunakan /show image\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
+                }
+
+                if (msgUser.type === 'chat') {
                     msgTmpSendText += `
                     Pesan: ${msgUser.body}\n
                     \`\`\`Waktu: ${msgUser.time}\`\`\`\n
                     ================\n`
                 }
             })
-            client.sendText(from, msgTmpSendText)
+            client.reply(from, msgTmpSendText, id)
             break;
 
         case onlyCommands['/help']:
