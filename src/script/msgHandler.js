@@ -44,6 +44,7 @@ const msgHandler = async (client, message) => {
         mimetype,
         duration,
         id,
+        chatId,
         isMedia,
         isGroupMsg,
         mentionedJidList,
@@ -51,7 +52,9 @@ const msgHandler = async (client, message) => {
         type,
         to
     } = message;
+    let grupId ; 
 
+    console.log(message);
     if (msgDelete === true) {
         const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
         const msgRecovers = JSON.parse(file);
@@ -59,7 +62,7 @@ const msgHandler = async (client, message) => {
         console.log(msgRecovers);
         const date = new Date()
         const dataMessage = {
-            id:to, 
+            id:from, 
             body, 
             type, 
             time:`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, 
@@ -67,6 +70,9 @@ const msgHandler = async (client, message) => {
         }
         msgRecovers.push(dataMessage)
         writeFileSync('./src/script/lib/msgRecover.json', JSON.stringify(msgRecovers))
+        return;
+    } else {
+        grupId = chatId.split('-')[1];
     }
 
     if (!`${body}`.includes("/") && (!`${caption}`.search("/") !== 0)) return
@@ -275,26 +281,32 @@ const msgHandler = async (client, message) => {
         case onlyCommands['/show']:
             const readMsgRecover = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
             const msgRecover = JSON.parse(readMsgRecover)
-            const msgRecoverUser = msgRecover.filter(user => user.id == `${mentionedJidList[0]}`)
-            let msgTmpSendText = ""
-            msgRecoverUser.forEach(msgUser => {
-                if (msgUser.type === 'image' && msgUser.type === arg) {
-                    msgTmpSendText += `pesan ini adalah gambar, gunakan /show image\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
-                    
+            let msgRecoverUser;
+            if (mentionedJidList[0] === undefined || arg === undefined) {
+                msgRecoverUser = msgRecover.find(user => user.id.split('-')[1] === grupId)
+            } else {
+                msgRecoverUser = msgRecover.filter(user => {
+                    const userGrupId = user.id.split('-')[1]
+                    const userId = user.id.split('-')[0]
+    
+                    if (userGrupId === grupId && grupId !== undefined) {
+                        // get by time example : 13:03
+                        return user.time === arg
+                    }
+    
+                })
+            }
+            
+            let msgTmpSendText = "" 
+            if (typeof msgRecoverUser === "object") {
+                if (msgRecoverUser.type === "chat") {
+                    msgTmpSendText += `Pesan: ${msgRecoverUser.body}\n\`\`\`Waktu: ${msgRecoverUser.time}\`\`\`\n================\n`;
+                    client.reply(from, msgTmpSendText, id);
+                } else if (msgRecoverUser.type === "image") {
+                    bufferBase64 = `data:image/png;base64,${msgRecoverUser.body.toString('base64')}`;
+                    client.sendImage(from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
                 } 
-
-                if (msgUser.type === 'video' && msgUser.type === optionSize) {
-                    msgTmpSendText += `pesan ini adalah gambar, gunakan /show image\n\`\`\`Waktu: ${msgUser.time}\`\`\`\n`
-                }
-
-                if (msgUser.type === 'chat') {
-                    msgTmpSendText += `
-                    Pesan: ${msgUser.body}\n
-                    \`\`\`Waktu: ${msgUser.time}\`\`\`\n
-                    ================\n`
-                }
-            })
-            client.reply(from, msgTmpSendText, id)
+            }
             break;
 
         case onlyCommands['/help']:
