@@ -54,7 +54,6 @@ const msgHandler = async (client, message) => {
     } = message;
     let grupId ; 
 
-    console.log(message);
     if (msgDelete === true) {
         const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
         const msgRecovers = JSON.parse(file);
@@ -68,7 +67,7 @@ const msgHandler = async (client, message) => {
             time:`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, 
             date:`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
         }
-        msgRecovers.push(dataMessage)
+        msgRecovers.unshift(dataMessage)
         writeFileSync('./src/script/lib/msgRecover.json', JSON.stringify(msgRecovers))
         return;
     } else {
