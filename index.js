@@ -8,7 +8,8 @@ const http = require('http');
 const app = express();
 const server = http.createServer(app)
 const io = socketIo(server);
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8000;
+process.env.TZ = "Asia/Jakarta";
 
 app.get('/', (req, res) => {
     res.sendFile('/src/views/index.html', {
