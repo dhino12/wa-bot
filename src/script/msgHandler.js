@@ -285,14 +285,13 @@ const msgHandler = async (client, message) => {
                 msgRecoverUser = msgRecover.find(user => user.id.split('-')[1] === grupId)
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
-                    const userGrupId = user.id.split('-')[1]
-                    const userId = user.id.split('-')[0]
-    
+                    const userGrupId = user.id.split('-')[1];
+                    const userId = user.id.split('-')[0];
+
                     if (userGrupId === grupId && grupId !== undefined) {
                         // get by time example : 13:03
                         return user.time === arg
-                    }
-    
+                    } 
                 })
             }
             
@@ -303,7 +302,7 @@ const msgHandler = async (client, message) => {
                     client.reply(from, msgTmpSendText, id);
                 } else if (msgRecoverUser.type === "image") {
                     bufferBase64 = `data:image/png;base64,${msgRecoverUser.body.toString('base64')}`;
-                    client.sendImage(from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
+                    client.sendFile (from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
                 } 
             }
             break;
