@@ -78,12 +78,18 @@ async function ytDownloader(dataObj, createWriteStream) {
         return higher; // output = List Size Video\n======= formatVideo
 
     }
+
     if (typeof higher === 'string' && !higher.startsWith('List')) {
-        startTime = 0
+        startTime = 0;
         throw higher; // output = error video;
     }
 
-    const filePath = `./media/tmp/video/tmpVideo.${higher.mimeType.split(';')[0].split('/')[1]}`
+    if (higher === undefined || titleVideo === '') {
+        startTime = 0;
+        throw 'oop anda belum mendownload apapun !';
+    }
+
+    const filePath = `./media/tmp/video/tmpVideo.${higher.mimeType.split(';')[0].split('/')[1]}`;
 
     return new Promise((resolve, reject) => {
         ytdl(arg, {
@@ -96,7 +102,7 @@ async function ytDownloader(dataObj, createWriteStream) {
             .on('error', (e) => {
                 console.log(e);
                 startTime = 0;
-                titleVideo = ''
+                titleVideo = '';
                 reject(e);
             })
             .on('finish', async () => {
