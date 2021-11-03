@@ -11,7 +11,7 @@ async function ytInfo(arg, optionInfo, optionSize) {
 
     if (arg === 'info' && titleVideo !== '') {
         // jika perintahnya /yt info
-        return `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded`;
+        return `Video : ${titleVideo}\nProses : *${percentDownload}%* downloaded !`;
     }
 
     if (!validateUrl(arg)) return
@@ -43,11 +43,11 @@ async function ytInfo(arg, optionInfo, optionSize) {
 
     if (videoDetails.lengthSeconds >= 1800) {
         return `Video tidak boleh lebih dari 30menit,\nsedangkan video anda\n` +
-            `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}*`;
+            `*${Math.floor(videoDetails.lengthSeconds / 60)}:${Math.floor(videoDetails.lengthSeconds % 60)}* !`;
     }
     if (startTime > 1) {
         // jika ingin memulai download baru tetapi proses sebelumnya belum selesai
-        return `${percentDownload}% downloaded` + `\nproses download video *${titleVideo}* masih berlangsung, harap 1 per 1`;
+        return `${percentDownload}% downloaded` + `\nproses download video *${titleVideo}* masih berlangsung, harap 1 per 1 !`;
     }
 
     const bestQualityVideo = searchVideoBestQuality(formats);
@@ -56,7 +56,7 @@ async function ytInfo(arg, optionInfo, optionSize) {
     if (higher === undefined) {
         startTime = 0;
         titleVideo = ''
-        return `Video youtube dengan size ${optionSize} tidak tersedia `;
+        return `Video youtube dengan size ${optionSize} tidak tersedia !`;
     }
     higher.title = videoDetails.title;
     titleVideo = videoDetails.title
@@ -73,8 +73,6 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     ++startTime;
     const higher = await ytInfo(arg, optionInfo, optionSize);
-
-    if (titleVideo === '' || titleVideo === undefined) return "Maaf anda belum mendownload apapun"
 
     if (typeof higher === 'string' && higher.startsWith('List')) {
         return higher; // output = List Size Video\n======= formatVideo
