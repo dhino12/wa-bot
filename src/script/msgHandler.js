@@ -283,7 +283,7 @@ const msgHandler = async (client, message) => {
             const readMsgRecover = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
             const msgRecover = JSON.parse(readMsgRecover)
             let msgRecoverUser;
-            if (arg === undefined) {
+            if (mentionedJidList[0] === undefined && arg === undefined) {
                 msgRecoverUser = msgRecover.find(user => user.id.split('-')[1] === grupId)
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
@@ -306,11 +306,11 @@ const msgHandler = async (client, message) => {
                     msgTmpSendText += `Pesan: ${msgRecoverUser.body}\n\`\`\`Waktu: ${msgRecoverUser.time}\`\`\`\n================\n`;
                     client.reply(from, msgTmpSendText, id);
                 } else if (msgRecoverUser.type === "image") {
-                    bufferBase64 = `data:image/png;base64,${msgRecoverUser.body.toString('base64')}`;
+                    mediaData = await decryptMedia(msgRecoverUser, useragentOverride);
+                    bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
                     client.sendFile (from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
                 } 
             }
-            console.log(msgRecoverUser);
             break;
 
         case onlyCommands['/help']:
