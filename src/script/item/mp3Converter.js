@@ -11,7 +11,7 @@ function toMp3(filePath, fileOut, arg) {
 
   if (arg === 'info') {
     if (progress === '') return 'tidak ada convert yg berjalan / convert belum dimulai'
-    return `Proses convert : *${progress}%* `;
+    return `Proses convert : *${progress}* `;
   }
   
   ++totalConvert
