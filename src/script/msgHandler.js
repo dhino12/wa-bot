@@ -59,12 +59,12 @@ const msgHandler = async (client, message) => {
         const msgRecovers = JSON.parse(file);
 
         console.log(msgRecovers);
-        const date = new Date()
+        const date = new Date();
         const dataMessage = {
             id:from, 
             body, 
             type, 
-            time:`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, 
+            time:`${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}:${date.getSeconds()}`, 
             date:`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
         }
         msgRecovers.unshift(dataMessage)
@@ -74,7 +74,7 @@ const msgHandler = async (client, message) => {
         grupId = chatId.split('-')[1];
     }
 
-    if (!`${body}`.includes("/") && (!`${caption}`.search("/") !== 0)) return
+    if (!`${body}`.includes("/") && (!`${caption}`.search("/") !== 0)) return;
     // if (!caption.search('/') && !validateUrl(caption)) return;
 
     const commands = caption || body;
@@ -256,11 +256,11 @@ const msgHandler = async (client, message) => {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
             }
-            const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`
-            let fileOut = `./media/tmp/audio/audio.mp3`
+            const filePath = `./media/tmp/video/videoTmp.${mimetype.split('/')[1]}`;
+            let fileOut = `./media/tmp/audio/audio.mp3`;
 
             if (arg !== undefined && arg !== 'info') {
-                fileOut = `./media/tmp/audio/${arg}.mp3`
+                fileOut = `./media/tmp/audio/${arg}.mp3`;
             }
 
             try {
@@ -283,16 +283,19 @@ const msgHandler = async (client, message) => {
             const readMsgRecover = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
             const msgRecover = JSON.parse(readMsgRecover)
             let msgRecoverUser;
-            if (mentionedJidList[0] === undefined || arg === undefined) {
+            if (arg === undefined) {
                 msgRecoverUser = msgRecover.find(user => user.id.split('-')[1] === grupId)
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
                     const userGrupId = user.id.split('-')[1];
                     const userId = user.id.split('-')[0];
 
-                    if (userGrupId === grupId && grupId !== undefined) {
+                    console.log(userGrupId === grupId);
+                    console.log(user.time);
+                    if (userGrupId === grupId && arg === user.time) {
                         // get by time example : 13:03
-                        return user.time === arg
+                        console.log(`user time = ${user}`);
+                        return user
                     } 
                 })
             }
@@ -307,6 +310,7 @@ const msgHandler = async (client, message) => {
                     client.sendFile (from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
                 } 
             }
+            console.log(msgRecoverUser);
             break;
 
         case onlyCommands['/help']:
