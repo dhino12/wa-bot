@@ -247,7 +247,7 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/mp3']:
             if (arg === 'info') {
-                const mp3Convert = await toMp3(undefined, undefined, arg);
+                const mp3Convert = toMp3(undefined, undefined, arg);
                 await client.sendText(from, mp3Convert);
                 return
             }
@@ -271,7 +271,7 @@ const msgHandler = async (client, message) => {
                 const fileName = fileOut.split('/')[4];
                 await client.sendFile(from, fileOut, fileName, fileName);
                 rmSync(fileOut);
-                rmSync(filePath);   
+                rmSync(filePath);
             } catch (error) {
                 console.log(error);
                 
