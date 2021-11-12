@@ -60,14 +60,9 @@ const msgHandler = async (client, message) => {
 
         console.log(msgRecovers);
         const date = new Date();
-        const dataMessage = {
-            id:from, 
-            body, 
-            type, 
-            time:`${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}:${date.getSeconds()}`, 
-            date:`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
-        }
-        msgRecovers.unshift(dataMessage)
+        message.time = `${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}:${date.getSeconds()}`;
+        message.date = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+        msgRecovers.unshift(message);
         writeFileSync('./src/script/lib/msgRecover.json', JSON.stringify(msgRecovers))
         return;
     } else {
@@ -284,7 +279,8 @@ const msgHandler = async (client, message) => {
             const msgRecover = JSON.parse(readMsgRecover)
             let msgRecoverUser;
             if (mentionedJidList[0] === undefined && arg === undefined) {
-                msgRecoverUser = msgRecover.find(user => user.id.split('-')[1] === grupId)
+                msgRecoverUser = msgRecover.find(user => user.from.split('-')[1] === grupId)
+
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
                     const userGrupId = user.id.split('-')[1];
@@ -308,7 +304,7 @@ const msgHandler = async (client, message) => {
                 } else if (msgRecoverUser.type === "image") {
                     mediaData = await decryptMedia(msgRecoverUser, useragentOverride);
                     bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
-                    client.sendFile (from, bufferBase64, 'gambarnya tuan', 'image yang dihapus');
+                    client.sendFile (from, bufferBase64, 'gambarnya tuan', msgRecoverUser.caption);
                 } 
             }
             break;
