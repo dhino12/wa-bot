@@ -288,7 +288,7 @@ const msgHandler = async (client, message) => {
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
                     const userGrupId = user.from.split('-')[1];
-                    const userId = user.id.split('-')[0];
+                    const userId = user.from.split('-')[0];
 
                     console.log(user.time);
                     if (userGrupId === grupId && arg === user.time) {
@@ -297,7 +297,7 @@ const msgHandler = async (client, message) => {
                     }
                 })
             }
-            
+
             let msgTmpSendText = ""
             if (Array.isArray(msgRecoverUser)) {
                 msgRecoverUser.forEach(async (msg) => {
@@ -309,16 +309,28 @@ const msgHandler = async (client, message) => {
                         mediaData = await decryptMedia(msg, useragentOverride);
                         bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
                         await client.sendFile(from, bufferBase64, 'gambarnya tuan', msg.caption);
+
+                    }  else if (msg.type === "video") {
+                        mediaData = await decryptMedia(msg, useragentOverride);
+                        bufferBase64 = `data:video/mp4;base64,${mediaData.toString('base64')}`;
+                        await client.sendFile(from, bufferBase64, 'videonya tuan', msg.caption);
                     }
                 })
             } else {
                 if (msgRecoverUser.type === "chat") {
                     msgTmpSendText += `Pesan: ${msgRecoverUser.body}\n\`\`\`Waktu: ${msgRecoverUser.time}\`\`\`\n================\n`;
                     await client.reply(from, msgTmpSendText, id);
+                    // await client.sendTextWithMentions(from, `@${msgRecoverUser.from.split('-')[0]}`)
+
                 } else if (msgRecoverUser.type === "image") {
                     mediaData = await decryptMedia(msgRecoverUser, useragentOverride);
                     bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
                     await client.sendFile(from, bufferBase64, 'gambarnya tuan', msgRecoverUser.caption);
+
+                } else if (msgRecoverUser.type === "video") {
+                    mediaData = await decryptMedia(msgRecoverUser, useragentOverride);
+                    bufferBase64 = `data:video/mp4;base64,${mediaData.toString('base64')}`;
+                    await client.sendFile(from, bufferBase64, 'videonya tuan', msgRecoverUser.caption);
                 }
             }
             break;
