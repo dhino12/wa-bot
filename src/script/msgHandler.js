@@ -18,7 +18,7 @@ const {
     writeFile,
     readFileSync
 } = require('fs');
- 
+
 const {
     replaceAll,
     validateUrl,
@@ -30,8 +30,12 @@ const {
 } = require('./item/commands');
 
 const os = require('os');
-const { ytDownloader } = require('./item/ytDownloader');
-const { toMp3 } = require('./item/mp3Converter');
+const {
+    ytDownloader
+} = require('./item/ytDownloader');
+const {
+    toMp3
+} = require('./item/mp3Converter');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -52,7 +56,7 @@ const msgHandler = async (client, message) => {
         type,
         to
     } = message;
-    let grupId ; 
+    let grupId;
 
     if (msgDelete === true) {
         const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
@@ -60,7 +64,7 @@ const msgHandler = async (client, message) => {
 
         console.log(msgRecovers);
         const date = new Date();
-        message.time = `${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}:${date.getSeconds()}`;
+        message.time = `${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}`;
         message.date = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
         msgRecovers.unshift(message);
         writeFileSync('./src/script/lib/msgRecover.json', JSON.stringify(msgRecovers))
@@ -78,12 +82,12 @@ const msgHandler = async (client, message) => {
     const optionSize = commands.split(' ')[2]; // size video = 360p, 480p, 720p, 1080p / info video
     const optionInfo = commands.split(' ')[3]; // info video
     let dataMessage = undefined;
-    
+
     if (quotedMsg) {
         dataMessage = quotedMsg;
         mimetype = dataMessage.mimetype;
         duration = dataMessage.duration;
-    } else { 
+    } else {
         dataMessage = message
     }
     let mediaData = undefined;
@@ -94,7 +98,7 @@ const msgHandler = async (client, message) => {
             await client.sendText(from, '👋 Hello!');
             console.log(os.platform());
             break;
- 
+
         case onlyCommands['/wa-ver']:
             const waver = await client.getWAVersion();
             await client.sendText(from, `versi whatsapp anda: ${waver.toString()}`);
@@ -115,7 +119,7 @@ const msgHandler = async (client, message) => {
                     circle: false,
                     keepScale: true
                 });
-            } 
+            }
             break;
 
         case onlyCommands['/stiker-nobg']:
@@ -137,7 +141,7 @@ const msgHandler = async (client, message) => {
                     size: 'regular',
                     type: 'product',
                     outputFile
-                }); 
+                });
                 await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
                     author: '',
                     circle: false,
@@ -170,7 +174,7 @@ const msgHandler = async (client, message) => {
                 }
             } else {
                 if (mimetype !== 'video/mp4') {
-                    await client.reply(from, 'oops ini bukan video', id) 
+                    await client.reply(from, 'oops ini bukan video', id)
                     return
                 }
                 await client.reply(from, 'oops file melebihi aturan durasi *10 detik*', id)
@@ -178,7 +182,7 @@ const msgHandler = async (client, message) => {
             break;
 
         case onlyCommands['/yt']:
-            console.log('start');  
+            console.log('start');
             const ytData = {};
             ytData.arg = arg;
             ytData.optionInfo = optionInfo;
@@ -188,30 +192,30 @@ const msgHandler = async (client, message) => {
             if (!validateUrl(arg) && arg !== 'info') return await client.sendText(from, 'oops sepertinya anda typo gunakan /yt info atau /yt <link>')
 
             try {
-                let filePath =  await ytDownloader(ytData, createWriteStream);
-                 
+                let filePath = await ytDownloader(ytData, createWriteStream);
+
                 console.log(`filePath  : ${filePath}`);
-                if (filePath !== undefined && !filePath.includes('.mp4') && !filePath.includes('.webm')) { 
-                    await client.sendText(from, filePath);    
+                if (filePath !== undefined && !filePath.includes('.mp4') && !filePath.includes('.webm')) {
+                    await client.sendText(from, filePath);
                     return;
                 }
-                
+
                 const fileName = filePath.split(';')[0];
                 filePath = filePath.split(';')[1];
                 console.log(filePath);
                 await client.sendFile(from, filePath, fileName, fileName);
                 rmSync(filePath);
-        
-            } catch (error) {      
-                console.log(error);                  
+
+            } catch (error) {
+                console.log(error);
                 if (error.statusCode === 410 || error === 410) {
-                    await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id); 
+                    await client.sendText(from, 'Maaf error, sepertinya bot terkena cekal izin Youtube', id);
 
                 } else if (error.includes("!")) {
                     await client.sendText(from, `${error}`, id);
 
                 }
-            } 
+            }
             break;
 
         case onlyCommands['/fb']:
@@ -246,8 +250,8 @@ const msgHandler = async (client, message) => {
                 await client.sendText(from, mp3Convert);
                 return
             }
-            
-            if(mimetype !== 'video/mp4') {
+
+            if (mimetype !== 'video/mp4') {
                 await client.sendText(from, 'oops... file bukan mp4')
                 return
             }
@@ -259,20 +263,20 @@ const msgHandler = async (client, message) => {
             }
 
             try {
-                mediaData = await decryptMedia(dataMessage, useragentOverride); 
-                writeFileSync(filePath, mediaData); 
-                await toMp3(filePath, fileOut, arg);  
-                    
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
+                writeFileSync(filePath, mediaData);
+                await toMp3(filePath, fileOut, arg);
+
                 const fileName = fileOut.split('/')[4];
                 await client.sendFile(from, fileOut, fileName, fileName);
                 rmSync(fileOut);
                 rmSync(filePath);
             } catch (error) {
                 console.log(error);
-                
-                if (error.search("Progress:")) await client.sendText(from, error) 
+
+                if (error.search("Progress:")) await client.sendText(from, error)
             }
-        break;
+            break;
 
         case onlyCommands['/show']:
             const readMsgRecover = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
@@ -283,29 +287,39 @@ const msgHandler = async (client, message) => {
 
             } else {
                 msgRecoverUser = msgRecover.filter(user => {
-                    const userGrupId = user.id.split('-')[1];
+                    const userGrupId = user.from.split('-')[1];
                     const userId = user.id.split('-')[0];
 
-                    console.log(userGrupId === grupId);
                     console.log(user.time);
                     if (userGrupId === grupId && arg === user.time) {
-                        // get by time example : 13:03
-                        console.log(`user time = ${user}`);
+                        // get by time example : 13:03 
                         return user
-                    } 
+                    }
                 })
             }
             
-            let msgTmpSendText = "" 
-            if (typeof msgRecoverUser === "object") {
+            let msgTmpSendText = ""
+            if (Array.isArray(msgRecoverUser)) {
+                msgRecoverUser.forEach(async (msg) => {
+                    if (msg.type === "chat") {
+                        msgTmpSendText += `Pesan: ${msg.body}\n\`\`\`Waktu: ${msg.time}\`\`\`\n================\n`;
+                        await client.reply(from, msgTmpSendText, id);
+
+                    } else if (msg.type === "image") {
+                        mediaData = await decryptMedia(msg, useragentOverride);
+                        bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
+                        await client.sendFile(from, bufferBase64, 'gambarnya tuan', msg.caption);
+                    }
+                })
+            } else {
                 if (msgRecoverUser.type === "chat") {
                     msgTmpSendText += `Pesan: ${msgRecoverUser.body}\n\`\`\`Waktu: ${msgRecoverUser.time}\`\`\`\n================\n`;
-                    client.reply(from, msgTmpSendText, id);
+                    await client.reply(from, msgTmpSendText, id);
                 } else if (msgRecoverUser.type === "image") {
                     mediaData = await decryptMedia(msgRecoverUser, useragentOverride);
                     bufferBase64 = `data:image/png;base64,${mediaData.toString('base64')}`;
-                    client.sendFile (from, bufferBase64, 'gambarnya tuan', msgRecoverUser.caption);
-                } 
+                    await client.sendFile(from, bufferBase64, 'gambarnya tuan', msgRecoverUser.caption);
+                }
             }
             break;
 
