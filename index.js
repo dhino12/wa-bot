@@ -32,6 +32,7 @@ create({
         '--single-process', // <- this one doesn't works in Windows
         '--disable-gpu'
     ],
+    multiDevice: true
 }).then(client => start(client))
 .catch(error => console.log(error));
 
