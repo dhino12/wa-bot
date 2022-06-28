@@ -1,3 +1,2 @@
-2022/06/01-13:00:33.556 153d Reusing MANIFEST /media/mocha/Files/Project/wa-bot/_IGNORE_session/Default/Session Storage/MANIFEST-000001
-2022/06/01-13:00:33.567 153d Recovering log #3
-2022/06/01-13:00:33.568 153d Reusing old log /media/mocha/Files/Project/wa-bot/_IGNORE_session/Default/Session Storage/000003.log 
+2022/06/27-13:09:08.890 4670 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\Session Storage since it was missing.
+2022/06/27-13:09:09.122 4670 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Session Storage/MANIFEST-000001
