@@ -1,12 +1,4 @@
-const {
-    decryptMedia
-} = require('@open-wa/wa-decrypt');
-
-const {
-    removeBackgroundFromImageBase64,
-    RemoveBgResult,
-    removeBackgroundFromImageFile
-} = require('remove.bg');
+const { decryptMedia } = require('@open-wa/wa-decrypt');
 
 const {
     existsSync,
@@ -24,6 +16,8 @@ const {
     validateUrl,
 } = require('./item/util');
 
+const { removeBg } = require('./item/removeBg');
+
 const {
     desc,
     onlyCommands
@@ -33,6 +27,7 @@ const os = require('os');
 const {
     ytDownloader
 } = require('./item/ytDownloader');
+
 const {
     toMp3
 } = require('./item/mp3Converter');
@@ -56,6 +51,9 @@ const msgHandler = async (client, message) => {
         type,
         to
     } = message;
+
+    console.log(message);
+
     let grupId;
 
     if (msgDelete === true) {
@@ -127,6 +125,7 @@ const msgHandler = async (client, message) => {
                 const outputFile = './media/image/noBg.png';
                 mediaData = await decryptMedia(dataMessage, useragentOverride);
                 bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+
                 const dirPath = './media/image';
 
                 if (!existsSync(dirPath)) {
@@ -135,13 +134,8 @@ const msgHandler = async (client, message) => {
                     });
                 }
 
-                const result = await removeBackgroundFromImageBase64({
-                    base64img: bufferBase64,
-                    apiKey: 'QM3HY6Cy3hGQwbxC9sQhQHwX',
-                    size: 'regular',
-                    type: 'product',
-                    outputFile
-                });
+                const result = await removeBg(bufferBase64, outputFile);
+                
                 await client.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`, {
                     author: '',
                     circle: false,
@@ -149,13 +143,38 @@ const msgHandler = async (client, message) => {
                 });
                 rmSync(outputFile);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
             // nonaktif untuk menyimpan gambar yang di remove backgroundnya
             // await fs.writeFile(outputFile, result.base64img, (err) => {
             //     if(err) throw err
             //     console.log('File sudah disimpan');
             // });
+            break;
+
+        case onlyCommands['/removebg']: 
+            try {
+                const outputFile = './media/image/noBg.png';
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
+                bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                const dirPath = './media/image';
+
+                if (!existsSync(dirPath)) {
+                    mkdirSync(dirPath, {
+                        recursive: true
+                    });
+                }
+
+                
+                const result = await removeBg(bufferBase64, outputFile);
+                bufferBase64 = `data:application/x-zip-compressed;base64,${result.base64img}`;
+                // console.log(bufferBase64);
+                await client.sendFile(from, bufferBase64, 'foto-nobg.png', 'fotonya tuan' ,false, false, false, true);
+                
+                // rmSync(outputFile);
+            } catch (error) {
+                console.log(error);
+            }
             break;
 
         case onlyCommands['/stiker-gif']:
@@ -202,7 +221,7 @@ const msgHandler = async (client, message) => {
 
                 const fileName = filePath.split(';')[0];
                 filePath = filePath.split(';')[1];
-                console.log(filePath);
+                
                 await client.sendFile(from, filePath, fileName, fileName);
                 rmSync(filePath);
 
