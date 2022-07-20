@@ -171,7 +171,7 @@ const msgHandler = async (client, message) => {
                 // console.log(bufferBase64);
                 await client.sendFile(from, bufferBase64, 'foto-nobg.png', 'fotonya tuan' ,false, false, false, true);
                 
-                // rmSync(outputFile);
+                rmSync(outputFile);
             } catch (error) {
                 console.log(error);
             }
