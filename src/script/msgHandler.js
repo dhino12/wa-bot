@@ -52,7 +52,7 @@ const msgHandler = async (client, message) => {
         to
     } = message;
 
-    // console.log(message);
+    console.log(message);
 
     let grupId;
 
