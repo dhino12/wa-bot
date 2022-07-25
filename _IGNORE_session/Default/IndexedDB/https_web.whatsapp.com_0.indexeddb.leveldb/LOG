@@ -1,33 +1,6 @@
-2022/07/25-11:55:31.657 3cf0 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
-2022/07/25-11:55:32.014 3cf0 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/07/25-11:55:32.822 2438 Level-0 table #5: started
-2022/07/25-11:55:33.059 2438 Level-0 table #5: 10533 bytes OK
-2022/07/25-11:55:33.200 2438 Delete type=0 #3
-2022/07/25-11:55:33.200 2438 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
-2022/07/25-11:56:13.058 2770 Level-0 table #7: started
-2022/07/25-11:56:13.276 2770 Level-0 table #7: 1129995 bytes OK
-2022/07/25-11:56:13.400 2770 Delete type=0 #4
-2022/07/25-11:56:19.402 5e1c Level-0 table #9: started
-2022/07/25-11:56:19.554 5e1c Level-0 table #9: 1032167 bytes OK
-2022/07/25-11:56:19.769 5e1c Delete type=0 #6
-2022/07/25-11:56:19.836 e74 Compacting 1@0 + 1@1 files
-2022/07/25-11:56:20.003 e74 Generated table #10@0: 41748 keys, 1291175 bytes
-2022/07/25-11:56:20.003 e74 Compacted 1@0 + 1@1 files => 1291175 bytes
-2022/07/25-11:56:20.100 e74 compacted to: files[ 0 1 1 0 0 0 0 ]
-2022/07/25-11:56:33.995 5e1c Compacting 1@1 + 1@2 files
-2022/07/25-11:56:34.216 5e1c Generated table #11@1: 17436 keys, 1092280 bytes
-2022/07/25-11:56:34.216 5e1c Compacted 1@1 + 1@2 files => 1092280 bytes
-2022/07/25-11:56:34.267 5e1c compacted to: files[ 0 0 1 0 0 0 0 ]
-2022/07/25-11:56:34.268 5e1c Delete type=2 #7
-2022/07/25-11:56:34.268 5e1c Delete type=2 #9
-2022/07/25-11:56:36.849 26ac Level-0 table #13: started
-2022/07/25-11:56:36.978 26ac Level-0 table #13: 968632 bytes OK
-2022/07/25-11:56:37.069 26ac Delete type=2 #5
-2022/07/25-11:56:37.069 26ac Delete type=0 #8
-2022/07/25-11:56:37.069 26ac Delete type=2 #10
-2022/07/25-11:56:37.282 26ac Compacting 1@1 + 1@2 files
-2022/07/25-11:56:37.469 26ac Generated table #14@1: 20486 keys, 1225963 bytes
-2022/07/25-11:56:37.469 26ac Compacted 1@1 + 1@2 files => 1225963 bytes
-2022/07/25-11:56:37.579 26ac compacted to: files[ 0 0 1 0 0 0 0 ]
-2022/07/25-11:56:37.579 26ac Delete type=2 #11
-2022/07/25-11:56:37.579 26ac Delete type=2 #13
+2022/07/25-13:19:10.122 1e18 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2022/07/25-13:19:10.259 1e18 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/07/25-13:19:10.722 1e68 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-13:19:47.088 250c Level-0 table #5: started
+2022/07/25-13:19:47.392 250c Level-0 table #5: 1153625 bytes OK
+2022/07/25-13:19:47.513 250c Delete type=0 #3
