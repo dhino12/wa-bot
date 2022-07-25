@@ -1,16 +1,38 @@
-2022/07/21-01:44:32.214 2b94 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/07/21-01:44:32.214 2b94 Recovering log #243
-2022/07/21-01:44:32.406 2b94 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000243.log 
-2022/07/21-01:44:43.431 1afc Level-0 table #253: started
-2022/07/21-01:44:43.652 1afc Level-0 table #253: 1420154 bytes OK
-2022/07/21-01:44:43.770 1afc Delete type=0 #243
-2022/07/21-01:44:44.600 428 Compacting 1@1 + 6@2 files
-2022/07/21-01:44:44.810 428 Generated table #254@1: 30725 keys, 2257966 bytes
-2022/07/21-01:44:45.017 428 Generated table #255@1: 25454 keys, 2272692 bytes
-2022/07/21-01:44:45.306 428 Generated table #256@1: 61564 keys, 2265422 bytes
-2022/07/21-01:44:45.519 428 Generated table #257@1: 16981 keys, 2189997 bytes
-2022/07/21-01:44:45.653 428 Generated table #258@1: 11554 keys, 2179903 bytes
-2022/07/21-01:44:45.952 428 Generated table #259@1: 104838 keys, 2258555 bytes
-2022/07/21-01:44:45.997 428 Generated table #260@1: 5387 keys, 111839 bytes
-2022/07/21-01:44:45.997 428 Compacted 1@1 + 6@2 files => 13536374 bytes
-2022/07/21-01:44:46.062 428 compacted to: files[ 0 0 7 0 0 0 0 ]
+2022/07/25-11:31:10.056 2cbc Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/07/25-11:31:10.094 2cbc Recovering log #372
+2022/07/25-11:31:10.100 2cbc Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000372.log 
+2022/07/25-11:31:10.100 2cbc Delete type=2 #318
+2022/07/25-11:31:10.100 2cbc Delete type=2 #319
+2022/07/25-11:31:10.100 2cbc Delete type=2 #320
+2022/07/25-11:31:10.100 2cbc Delete type=2 #368
+2022/07/25-11:31:10.100 2cbc Delete type=2 #369
+2022/07/25-11:31:10.100 2cbc Delete type=2 #371
+2022/07/25-11:31:10.428 1fbc Level-0 table #381: started
+2022/07/25-11:31:10.505 1fbc Level-0 table #381: 19888 bytes OK
+2022/07/25-11:31:10.621 1fbc Delete type=0 #372
+2022/07/25-11:31:10.621 1fbc Manual compaction at level-0 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:10.621 1fbc Manual compaction at level-1 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at '\x00\x10\x05\x02\x03\x00\x00\x00\x00\x00\x00\xf0?' @ 2146789 : 0
+2022/07/25-11:31:10.621 1fbc Compacting 1@1 + 1@2 files
+2022/07/25-11:31:10.780 1fbc Generated table #382@1: 1507 keys, 71626 bytes
+2022/07/25-11:31:10.780 1fbc Compacted 1@1 + 1@2 files => 71626 bytes
+2022/07/25-11:31:10.865 1fbc compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/07/25-11:31:10.865 1fbc Delete type=2 #381
+2022/07/25-11:31:10.865 1fbc Manual compaction at level-1 from '\x00\x10\x05\x02\x03\x00\x00\x00\x00\x00\x00\xf0?' @ 2146789 : 0 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:10.940 2cbc Level-0 table #384: started
+2022/07/25-11:31:11.108 2cbc Level-0 table #384: 5018 bytes OK
+2022/07/25-11:31:11.132 2cbc Delete type=2 #378
+2022/07/25-11:31:11.132 2cbc Delete type=0 #380
+2022/07/25-11:31:11.132 2cbc Manual compaction at level-0 from '\x00\x0f\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x10\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:11.132 2cbc Manual compaction at level-1 from '\x00\x0f\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x10\x00\x00\x00' @ 0 : 0; will stop at '\x00\x11\x00\x00\xc8\x08\x00w\x00a\x00m\x00_\x00m\x00e\x00t\x00a' @ 2146977 : 1
+2022/07/25-11:31:11.132 2cbc Compacting 1@1 + 1@2 files
+2022/07/25-11:31:11.218 2cbc Generated table #385@1: 1772 keys, 75018 bytes
+2022/07/25-11:31:11.218 2cbc Compacted 1@1 + 1@2 files => 75018 bytes
+2022/07/25-11:31:11.376 2cbc compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/07/25-11:31:11.377 2cbc Delete type=2 #384
+2022/07/25-11:31:11.377 2cbc Manual compaction at level-1 from '\x00\x11\x00\x00\xc8\x08\x00w\x00a\x00m\x00_\x00m\x00e\x00t\x00a' @ 2146977 : 1 .. '\x00\x10\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:11.576 2cbc Manual compaction at level-0 from '\x00\x0e\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0f\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:11.577 2cbc Manual compaction at level-1 from '\x00\x0e\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0f\x00\x00\x00' @ 0 : 0; will stop at (end)
+2022/07/25-11:31:39.461 3c5c Level-0 table #387: started
+2022/07/25-11:31:39.686 3c5c Level-0 table #387: 1155993 bytes OK
+2022/07/25-11:31:39.741 3c5c Delete type=2 #382
+2022/07/25-11:31:39.741 3c5c Delete type=0 #383
