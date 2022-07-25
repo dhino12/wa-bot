@@ -1,5 +1,6 @@
 const desc = {
     '/hi': 'katakan halo',
+    '/topdf': 'convert ke pdf',
     '/kick': 'Kick seseorang',
     '/mp3': 'Convert ke mp3',
     '/removebg': 'remove background',

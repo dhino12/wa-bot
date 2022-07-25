@@ -1,6 +1,10 @@
-2022/07/25-13:59:24.529 5180 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/07/25-13:59:24.529 5180 Recovering log #32
-2022/07/25-13:59:24.666 5180 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000032.log 
-2022/07/25-13:59:40.389 20f4 Level-0 table #37: started
-2022/07/25-13:59:40.613 20f4 Level-0 table #37: 1266755 bytes OK
-2022/07/25-13:59:40.651 20f4 Delete type=0 #32
+2022/07/25-15:21:21.100 2c24 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/07/25-15:21:21.101 2c24 Recovering log #45
+2022/07/25-15:21:21.356 2c24 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000045.log 
+2022/07/25-15:21:32.619 5e6c Level-0 table #50: started
+2022/07/25-15:21:32.836 5e6c Level-0 table #50: 1181740 bytes OK
+2022/07/25-15:21:32.964 5e6c Delete type=0 #45
+2022/07/25-15:21:33.824 5e6c Compacting 1@1 + 1@2 files
+2022/07/25-15:21:34.190 5e6c Generated table #51@1: 38202 keys, 2108655 bytes
+2022/07/25-15:21:34.190 5e6c Compacted 1@1 + 1@2 files => 2108655 bytes
+2022/07/25-15:21:34.217 5e6c compacted to: files[ 0 0 1 0 0 0 0 ]

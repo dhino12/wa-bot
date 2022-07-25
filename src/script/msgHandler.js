@@ -52,7 +52,7 @@ const msgHandler = async (client, message) => {
         to
     } = message;
 
-    // console.log(message);
+    console.log(message);
 
     let grupId;
 
@@ -111,6 +111,7 @@ const msgHandler = async (client, message) => {
                 })
             } else {
                 mediaData = await decryptMedia(dataMessage, useragentOverride);
+                console.log(mediaData.toString('base64'));
                 bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
                 await client.sendImageAsSticker(from, bufferBase64, {
                     author: '',
@@ -200,12 +201,21 @@ const msgHandler = async (client, message) => {
             }
             break;
 
+        case onlyCommands['/topdf']:
+            if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+
+            } else {
+                console.log('selain docx');
+            }
+            await client.sendText(from, 'Masa pengembangan (beta)');
+            break;
+
         case onlyCommands['/yt']:
             console.log('start');
             const ytData = {};
             ytData.arg = arg;
             ytData.optionInfo = optionInfo;
-            ytData.optionSize = optionSize;
+            ytData.optionSize = optionSize  ;
             ytData.from = from;
 
             if (!validateUrl(arg) && arg !== 'info') return await client.sendText(from, 'oops sepertinya anda typo gunakan /yt info atau /yt <link>')
