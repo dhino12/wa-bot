@@ -1,6 +1,6 @@
-2022/07/25-13:19:10.122 1e18 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
-2022/07/25-13:19:10.259 1e18 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/07/25-13:19:10.722 1e68 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
-2022/07/25-13:19:47.088 250c Level-0 table #5: started
-2022/07/25-13:19:47.392 250c Level-0 table #5: 1153625 bytes OK
-2022/07/25-13:19:47.513 250c Delete type=0 #3
+2022/07/25-13:59:24.529 5180 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/07/25-13:59:24.529 5180 Recovering log #32
+2022/07/25-13:59:24.666 5180 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000032.log 
+2022/07/25-13:59:40.389 20f4 Level-0 table #37: started
+2022/07/25-13:59:40.613 20f4 Level-0 table #37: 1266755 bytes OK
+2022/07/25-13:59:40.651 20f4 Delete type=0 #32
