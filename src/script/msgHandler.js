@@ -4,6 +4,7 @@ const {
     existsSync,
     mkdirSync,
     createWriteStream,
+    createReadStream,
     statSync,
     rmSync,
     writeFileSync,
@@ -11,26 +12,16 @@ const {
     readFileSync
 } = require('fs');
 
-const {
-    replaceAll,
-    validateUrl,
-} = require('./item/util');
+const axios = require('axios');
+const FormData = require('form-data');
 
+const { replaceAll, validateUrl } = require('./item/util');
 const { removeBg } = require('./item/removeBg');
-
-const {
-    desc,
-    onlyCommands
-} = require('./item/commands');
+const { desc, onlyCommands } = require('./item/commands');
+const { ytDownloader } = require('./item/ytDownloader');
+const { toMp3 } = require('./item/mp3Converter');
 
 const os = require('os');
-const {
-    ytDownloader
-} = require('./item/ytDownloader');
-
-const {
-    toMp3
-} = require('./item/mp3Converter');
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -203,7 +194,63 @@ const msgHandler = async (client, message) => {
 
         case onlyCommands['/topdf']:
             if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                mediaData = await decryptMedia(dataMessage, useragentOverride);
+                const formData = new FormData();
+                formData.append('testAja', JSON.stringify({
+                    parts: [
+                        {
+                            file: "document"
+                        }
+                    ],
+                    actions: [
+                        {
+                            type: "watermark",
+                            image: "company-logo",
+                            width: "50%"
+                        },
+                        {
+                            type: "watermark",
+                            text: "Property of PSPDFKit",
+                            width: 150,
+                            height: 20,
+                            left: 0,
+                            bottom: "100%"
+                        }
+                    ]
+                }))
 
+                formData.append('documents', createReadStream('./media/test.docx'));
+
+                axios.post('https://api.pspdfkit.com/build', formData, {
+                    headers: formData.getHeaders({
+                        'Authorization': 'Bearer pdf_live_A2Gt5UEsQthBW4bmO6WDqSS0qVWkHu3lq1zRUWRPmhk'
+                    }),
+                    responseType: 'stream'
+                }).then((response) => {
+                    response.data.pipe(createWriteStream('result.pdf'))
+                }).catch(async function(e) {
+                    console.log(e);
+                    const errorString = await streamToString(e.response.data);
+                    console.log(errorString);
+                })
+
+                function streamToString(stream) {
+                    const chunks = []
+                    return new Promise((resolve, reject) => {
+                        stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)))
+                        stream.on("error", (err) => reject(err))
+                        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
+                    })
+                }
+                  
+                // try {
+                //     bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
+                //     const data = fetch('https://api.pspdfkit.com/build', {
+                        
+                //     })
+                // } catch (error) {
+                    
+                // }
             } else {
                 console.log('selain docx');
             }

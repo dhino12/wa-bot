@@ -86,7 +86,7 @@ async function ytDownloader(dataObj, createWriteStream) {
 
     if (higher === undefined || titleVideo === '') {
         startTime = 0;
-        throw 'oop anda belum mendownload apapun !';
+        throw 'oops anda belum mendownload apapun !';
     }
 
     const filePath = `./media/tmp/video/tmpVideo.${higher.mimeType.split(';')[0].split('/')[1]}`;
