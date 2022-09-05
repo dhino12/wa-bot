@@ -1,2 +1,3 @@
-2022/09/03-14:25:46.231 4940 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\File System\Origins since it was missing.
-2022/09/03-14:25:46.471 4940 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\File System\Origins/MANIFEST-000001
+2022/09/05-20:42:09.477 5384 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\File System\Origins/MANIFEST-000001
+2022/09/05-20:42:09.478 5384 Recovering log #3
+2022/09/05-20:42:09.478 5384 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\File System\Origins/000003.log 

@@ -1,9 +1,24 @@
-2022/09/03-14:25:46.237 41a8 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
-2022/09/03-14:25:46.516 41a8 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/09/03-14:25:47.184 41a8 Level-0 table #5: started
-2022/09/03-14:25:47.239 41a8 Level-0 table #5: 10236 bytes OK
-2022/09/03-14:25:47.314 41a8 Delete type=0 #3
-2022/09/03-14:25:47.315 41a8 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
-2022/09/03-14:26:20.326 54ec Level-0 table #7: started
-2022/09/03-14:26:20.626 54ec Level-0 table #7: 1068670 bytes OK
-2022/09/03-14:26:20.749 54ec Delete type=0 #4
+2022/09/05-20:42:09.479 5388 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/09/05-20:42:09.480 5388 Recovering log #41
+2022/09/05-20:42:09.488 5388 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000041.log 
+2022/09/05-20:42:20.024 3e54 Compacting 1@1 + 1@2 files
+2022/09/05-20:42:20.368 3e54 Generated table #46@1: 12698 keys, 2189425 bytes
+2022/09/05-20:42:20.636 3e54 Generated table #47@1: 10717 keys, 1592698 bytes
+2022/09/05-20:42:20.636 3e54 Compacted 1@1 + 1@2 files => 3782123 bytes
+2022/09/05-20:42:20.744 3e54 compacted to: files[ 0 1 2 0 0 0 0 ]
+2022/09/05-20:42:20.745 3e54 Delete type=2 #40
+2022/09/05-20:42:20.746 3e54 Delete type=2 #43
+2022/09/05-20:42:28.206 5384 Level-0 table #49: started
+2022/09/05-20:42:28.420 5384 Level-0 table #49: 1245185 bytes OK
+2022/09/05-20:42:28.469 5384 Delete type=0 #41
+2022/09/05-20:42:28.586 e8 Compacting 1@0 + 1@1 files
+2022/09/05-20:42:28.820 e8 Generated table #50@0: 43764 keys, 1177068 bytes
+2022/09/05-20:42:28.820 e8 Compacted 1@0 + 1@1 files => 1177068 bytes
+2022/09/05-20:42:28.874 e8 compacted to: files[ 0 1 2 0 0 0 0 ]
+2022/09/05-20:42:28.875 e8 Delete type=2 #44
+2022/09/05-20:42:28.875 e8 Delete type=2 #49
+2022/09/05-20:42:37.073 3b4 Compacting 1@1 + 2@2 files
+2022/09/05-20:42:37.298 3b4 Generated table #51@1: 7426 keys, 2174325 bytes
+2022/09/05-20:42:37.526 3b4 Generated table #52@1: 30029 keys, 1918463 bytes
+2022/09/05-20:42:37.526 3b4 Compacted 1@1 + 2@2 files => 4092788 bytes
+2022/09/05-20:42:37.568 3b4 compacted to: files[ 0 0 2 0 0 0 0 ]
