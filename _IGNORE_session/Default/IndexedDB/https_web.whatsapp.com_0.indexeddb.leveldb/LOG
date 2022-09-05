@@ -1,24 +1,5 @@
-2022/09/05-20:42:09.479 5388 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/09/05-20:42:09.480 5388 Recovering log #41
-2022/09/05-20:42:09.488 5388 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000041.log 
-2022/09/05-20:42:20.024 3e54 Compacting 1@1 + 1@2 files
-2022/09/05-20:42:20.368 3e54 Generated table #46@1: 12698 keys, 2189425 bytes
-2022/09/05-20:42:20.636 3e54 Generated table #47@1: 10717 keys, 1592698 bytes
-2022/09/05-20:42:20.636 3e54 Compacted 1@1 + 1@2 files => 3782123 bytes
-2022/09/05-20:42:20.744 3e54 compacted to: files[ 0 1 2 0 0 0 0 ]
-2022/09/05-20:42:20.745 3e54 Delete type=2 #40
-2022/09/05-20:42:20.746 3e54 Delete type=2 #43
-2022/09/05-20:42:28.206 5384 Level-0 table #49: started
-2022/09/05-20:42:28.420 5384 Level-0 table #49: 1245185 bytes OK
-2022/09/05-20:42:28.469 5384 Delete type=0 #41
-2022/09/05-20:42:28.586 e8 Compacting 1@0 + 1@1 files
-2022/09/05-20:42:28.820 e8 Generated table #50@0: 43764 keys, 1177068 bytes
-2022/09/05-20:42:28.820 e8 Compacted 1@0 + 1@1 files => 1177068 bytes
-2022/09/05-20:42:28.874 e8 compacted to: files[ 0 1 2 0 0 0 0 ]
-2022/09/05-20:42:28.875 e8 Delete type=2 #44
-2022/09/05-20:42:28.875 e8 Delete type=2 #49
-2022/09/05-20:42:37.073 3b4 Compacting 1@1 + 2@2 files
-2022/09/05-20:42:37.298 3b4 Generated table #51@1: 7426 keys, 2174325 bytes
-2022/09/05-20:42:37.526 3b4 Generated table #52@1: 30029 keys, 1918463 bytes
-2022/09/05-20:42:37.526 3b4 Compacted 1@1 + 2@2 files => 4092788 bytes
-2022/09/05-20:42:37.568 3b4 compacted to: files[ 0 0 2 0 0 0 0 ]
+2022/09/06-01:04:54.343 386c Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2022/09/06-01:04:54.396 386c Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/09/06-01:05:22.493 3890 Level-0 table #5: started
+2022/09/06-01:05:22.808 3890 Level-0 table #5: 1065749 bytes OK
+2022/09/06-01:05:22.885 3890 Delete type=0 #3

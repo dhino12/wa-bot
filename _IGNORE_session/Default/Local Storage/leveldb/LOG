@@ -1,3 +1,2 @@
-2022/09/05-20:42:07.130 1a98 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Local Storage\leveldb/MANIFEST-000001
-2022/09/05-20:42:07.131 1a98 Recovering log #3
-2022/09/05-20:42:07.146 1a98 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\Local Storage\leveldb/000003.log 
+2022/09/06-01:04:47.449 3810 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\Local Storage\leveldb since it was missing.
+2022/09/06-01:04:48.002 3810 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Local Storage\leveldb/MANIFEST-000001
