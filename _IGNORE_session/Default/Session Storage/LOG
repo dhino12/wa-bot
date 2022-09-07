@@ -1,2 +1,3 @@
-2022/09/06-01:04:52.296 3810 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\Session Storage since it was missing.
-2022/09/06-01:04:52.491 3810 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Session Storage/MANIFEST-000001
+2022/09/07-19:00:59.456 1dc0 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Session Storage/MANIFEST-000001
+2022/09/07-19:00:59.457 1dc0 Recovering log #3
+2022/09/07-19:00:59.458 1dc0 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\Session Storage/000003.log 

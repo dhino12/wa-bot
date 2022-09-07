@@ -8,3 +8,5 @@ https://github.com/open-wa/wa-automate-nodejs/issues/1473
 https://github.com/heroku/heroku-buildpack-google-chrome.git
 https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
 https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
+
+npm i npm form-data i
