@@ -1,6 +1,0 @@
-2022/09/07-18:59:48.795 2820 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/09/07-18:59:48.923 2820 Recovering log #3
-2022/09/07-18:59:48.989 2820 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000003.log 
-2022/09/07-19:00:35.861 3fc8 Level-0 table #5: started
-2022/09/07-19:00:36.006 3fc8 Level-0 table #5: 1068636 bytes OK
-2022/09/07-19:00:36.144 3fc8 Delete type=0 #3

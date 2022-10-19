@@ -1,3 +1,2 @@
-2022/09/07-19:00:59.709 2f5c Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/09/07-19:00:59.710 2f5c Recovering log #4
-2022/09/07-19:00:59.758 2f5c Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000004.log 
+2022/10/19-17:12:52.678 2620 Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2022/10/19-17:12:53.003 2620 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
