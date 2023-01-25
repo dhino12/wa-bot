@@ -13,17 +13,11 @@ const io = socketIo(server);
 const port = process.env.PORT || 8000;
 process.env.TZ = "Asia/Jakarta";
 
-app.use(express.static(publicPath))
-// app.get('/', (req, res) => {
-//     res.sendFile('/src/views/index.html', {
-//         root: __dirname
-//     })
-// })
-
-io.on('connection', (socket) => {
-    // ev.on('Authenticating', )
-    socket.emit('message', 'Connecting ...')
-
+// app.use(express.static(publicPath))
+app.get('/', (req, res) => {
+    // res.sendFile('/src/views/index.html', {
+    //     root: __dirname
+    // })
     create({
         headless: true,
         useChrome: true,
@@ -59,20 +53,26 @@ io.on('connection', (socket) => {
         //base64 encoded qr code image
         console.log(`QR Code Received`);
         console.log(qr);
-        socket.emit('qr', qr);
-        socket.emit('message', 'QR Code Received'); 
+        
+        res.json({
+            img: qr
+        })
     });
     
     ev.on('STARTUP.**', async (data, sessionId) => {
         if(data==='SUCCESS') {
             console.log(`${sessionId} wa-bot started!`)
-            socket.emit('message', 'Whatsapp Ready');
-            socket.emit('ready', 'Whatsapp Ready');
         }
     })
 })
 
+io.on('connection', (socket) => {
+    // ev.on('Authenticating', )
+    socket.emit('message', 'Connecting ...')
+
+    
+})
+
 server.listen(port, () => {
     console.log('App Running on port : '+ port);
-    console.log(app.listen());
 })
