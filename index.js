@@ -20,41 +20,41 @@ app.use(express.static(publicPath))
 //     })
 // })
 
-create({
-    headless: true,
-    useChrome: true,
-    qrTimeout: 0,
-    authTimeout: 0,
-    chromiumArgs: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process', // <- this one doesn't works in Windows
-        '--disable-gpu'
-    ],
-    multiDevice: true
-}).then(client => start(client))
-.catch(error => console.log(error));
-
-function start(client) {
-    client.onMessage(async message => {
-        await msgHandler(client, message);
-    })
-
-    client.onMessageDeleted(async (message) => {
-        message.msgDelete = true
-        console.log(message);
-        await msgHandler(client, message)
-    })
-}
-
 io.on('connection', (socket) => {
     // ev.on('Authenticating', )
     socket.emit('message', 'Connecting ...')
 
+    create({
+        headless: true,
+        useChrome: true,
+        qrTimeout: 0,
+        authTimeout: 0,
+        chromiumArgs: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', // <- this one doesn't works in Windows
+            '--disable-gpu'
+        ],
+        multiDevice: true
+    }).then(client => start(client))
+    .catch(error => console.log(error));
+    
+    function start(client) {
+        client.onMessage(async message => {
+            await msgHandler(client, message);
+        })
+    
+        client.onMessageDeleted(async (message) => {
+            message.msgDelete = true
+            console.log(message);
+            await msgHandler(client, message)
+        })
+    }
+    
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
         console.log(`QR Code Received`);
