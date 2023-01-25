@@ -1,17 +1,27 @@
-2023/01/25-09:16:02.364 2be4 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2023/01/25-09:16:02.365 2be4 Recovering log #29
-2023/01/25-09:16:02.371 2be4 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000029.log 
-2023/01/25-09:16:02.371 2be4 Delete type=2 #28
-2023/01/25-09:16:02.438 4a6c Manual compaction at level-0 from '\x00\x13\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x14\x00\x00\x00' @ 0 : 0; will stop at (end)
-2023/01/25-09:16:02.470 4a6c Manual compaction at level-0 from '\x00\x12\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x13\x00\x00\x00' @ 0 : 0; will stop at (end)
-2023/01/25-09:16:02.502 2be4 Level-0 table #34: started
-2023/01/25-09:16:02.564 2be4 Level-0 table #34: 67682 bytes OK
-2023/01/25-09:16:02.603 2be4 Delete type=0 #29
-2023/01/25-09:16:02.603 2be4 Manual compaction at level-0 from '\x00\x11\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at '\x00\x13.\x02\x01\x0e\x00W\x00A\x00A\x00D\x00V\x00S\x00e\x00c\x00r\x00e\x00t\x00K\x00e\x00y' @ 21815 : 1
-2023/01/25-09:16:02.603 2be4 Compacting 1@0 + 1@1 files
-2023/01/25-09:16:02.690 2be4 Generated table #35@0: 3407 keys, 39208 bytes
-2023/01/25-09:16:02.691 2be4 Compacted 1@0 + 1@1 files => 39208 bytes
-2023/01/25-09:16:02.743 2be4 compacted to: files[ 0 1 1 0 0 0 0 ]
-2023/01/25-09:16:02.743 2be4 Delete type=2 #34
-2023/01/25-09:16:02.744 2be4 Manual compaction at level-0 from '\x00\x13.\x02\x01\x0e\x00W\x00A\x00A\x00D\x00V\x00S\x00e\x00c\x00r\x00e\x00t\x00K\x00e\x00y' @ 21815 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at (end)
-2023/01/25-09:16:02.758 2be4 Manual compaction at level-0 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/01/25-10:25:09.340 20cc Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/01/25-10:25:09.340 20cc Recovering log #33
+2023/01/25-10:25:09.417 20cc Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000033.log 
+2023/01/25-10:25:09.418 20cc Delete type=2 #31
+2023/01/25-10:25:09.603 401c Manual compaction at level-0 from '\x00\x17\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x18\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/01/25-10:25:09.650 401c Manual compaction at level-0 from '\x00\x16\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x17\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/01/25-10:25:09.680 401c Level-0 table #38: started
+2023/01/25-10:25:09.783 401c Level-0 table #38: 81359 bytes OK
+2023/01/25-10:25:09.883 401c Delete type=0 #33
+2023/01/25-10:25:09.883 401c Manual compaction at level-0 from '\x00\x15\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at '\x00\x17.\x02\x01\x0e\x00W\x00A\x00A\x00D\x00V\x00S\x00e\x00c\x00r\x00e\x00t\x00K\x00e\x00y' @ 27360 : 1
+2023/01/25-10:25:09.883 401c Compacting 1@0 + 1@1 files
+2023/01/25-10:25:09.991 401c Generated table #39@0: 4267 keys, 45826 bytes
+2023/01/25-10:25:09.991 401c Compacted 1@0 + 1@1 files => 45826 bytes
+2023/01/25-10:25:10.084 401c compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/01/25-10:25:10.085 401c Delete type=2 #38
+2023/01/25-10:25:10.085 401c Manual compaction at level-0 from '\x00\x17.\x02\x01\x0e\x00W\x00A\x00A\x00D\x00V\x00S\x00e\x00c\x00r\x00e\x00t\x00K\x00e\x00y' @ 27360 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/01/25-10:25:10.087 401c Level-0 table #41: started
+2023/01/25-10:25:10.160 401c Level-0 table #41: 14411 bytes OK
+2023/01/25-10:25:10.184 401c Delete type=2 #35
+2023/01/25-10:25:10.184 401c Delete type=0 #37
+2023/01/25-10:25:10.186 401c Manual compaction at level-0 from '\x00\x14\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x15\x00\x00\x00' @ 0 : 0; will stop at '\x00\x18\x04\x02\x01\x0b\x00d\x00e\x00b\x00u\x00g\x00C\x00u\x00r\x00s\x00o\x00r' @ 29060 : 1
+2023/01/25-10:25:10.186 401c Compacting 1@0 + 1@1 files
+2023/01/25-10:25:10.222 401c Generated table #42@0: 4029 keys, 36167 bytes
+2023/01/25-10:25:10.222 401c Compacted 1@0 + 1@1 files => 36167 bytes
+2023/01/25-10:25:10.273 401c compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/01/25-10:25:10.273 401c Delete type=2 #41
+2023/01/25-10:25:10.274 401c Manual compaction at level-0 from '\x00\x18\x04\x02\x01\x0b\x00d\x00e\x00b\x00u\x00g\x00C\x00u\x00r\x00s\x00o\x00r' @ 29060 : 1 .. '\x00\x15\x00\x00\x00' @ 0 : 0; will stop at (end)
