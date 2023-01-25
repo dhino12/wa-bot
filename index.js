@@ -47,10 +47,15 @@ function start(client) {
 
 // app.use(express.static(publicPath))
 app.get('/', (req, res) => {
-    // res.sendFile('/src/views/index.html', {
-    //     root: __dirname
-    // })
-    
+    res.sendFile('/src/views/index.html', {
+        root: __dirname
+    })
+})
+
+io.on('connection', (socket) => {
+    // ev.on('Authenticating', )
+    socket.emit('message', 'Connecting ...')
+
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
         console.log(`QR Code Received`);
@@ -66,12 +71,6 @@ app.get('/', (req, res) => {
             console.log(`${sessionId} wa-bot started!`)
         }
     })
-})
-
-io.on('connection', (socket) => {
-    // ev.on('Authenticating', )
-    socket.emit('message', 'Connecting ...')
-
     
 })
 
