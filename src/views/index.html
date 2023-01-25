@@ -21,7 +21,10 @@
     <script src="/socket.io/socket.io.min.js"></script>
     <script>
         $(document).ready(function () {
-            let socket = io()
+            let socket = io('/', {
+                transports: ['websocket'],
+                upgrade: false
+            })
 
             socket.on('message', (message) => {
                 $('.logs').append($('<li>').text(message))
