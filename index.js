@@ -55,9 +55,9 @@ io.on('connection', (socket) => {
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
         console.log(`QR Code Received`);
+        console.log(qr);
         socket.emit('qr', qr);
-        socket.emit('message', 'QR Code Received');
-        
+        socket.emit('message', 'QR Code Received'); 
     });
     
     ev.on('STARTUP.**', async (data, sessionId) => {
@@ -66,7 +66,6 @@ io.on('connection', (socket) => {
             socket.emit('message', 'Whatsapp Ready');
             socket.emit('ready', 'Whatsapp Ready');
         }
-
     })
 })
 
