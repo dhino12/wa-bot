@@ -74,4 +74,5 @@ io.on('connection', (socket) => {
 
 server.listen(port, () => {
     console.log('App Running on port : '+ port);
+    console.log(app.listen());
 })
