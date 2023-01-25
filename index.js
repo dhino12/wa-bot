@@ -5,7 +5,7 @@ const socketIo = require('socket.io');
 const express = require('express');
 const http = require('http');
 
-const publicPath = path.join(__dirname, 'views');
+const publicPath = path.join(__dirname, './views');
 const app = express();
 const server = http.createServer(app)
 const io = socketIo(server);
