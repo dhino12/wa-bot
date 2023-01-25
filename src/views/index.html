@@ -21,16 +21,14 @@
     <script src="/socket.io/socket.io.min.js"></script>
     <script>
         $(document).ready(function () {
-            let socket = io('/', {
-                transports: ['websocket'],
-                upgrade: false
-            })
+            let socket = io()
 
             socket.on('message', (message) => {
                 $('.logs').append($('<li>').text(message))
             })
 
             socket.on('qr', function (src) {
+                console.log(src);
                 $('#qrcode').attr('src', src);
             })
 
