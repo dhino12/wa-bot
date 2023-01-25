@@ -51,25 +51,24 @@ function start(client) {
     })
 }
 
+ev.on('qr.**', async (qr) => {
+    //base64 encoded qr code image
+    console.log(`QR Code Received`);
+    console.log(qr);
+    socket.emit('qr', qr);
+    socket.emit('message', 'QR Code Received'); 
+});
+
+ev.on('STARTUP.**', async (data, sessionId) => {
+    if(data==='SUCCESS') {
+        console.log(`${sessionId} wa-bot started!`)
+    }
+})
+
 io.on('connection', (socket) => {
     // ev.on('Authenticating', )
     socket.emit('message', 'Connecting ...')
 
-    ev.on('qr.**', async (qr) => {
-        //base64 encoded qr code image
-        console.log(`QR Code Received`);
-        console.log(qr);
-        socket.emit('qr', qr);
-        socket.emit('message', 'QR Code Received'); 
-    });
-    
-    ev.on('STARTUP.**', async (data, sessionId) => {
-        if(data==='SUCCESS') {
-            console.log(`${sessionId} wa-bot started!`)
-            socket.emit('message', 'Whatsapp Ready');
-            socket.emit('ready', 'Whatsapp Ready');
-        }
-    })
 })
 
 server.listen(port, () => {
