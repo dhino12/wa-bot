@@ -47,14 +47,10 @@ function start(client) {
 
 // app.use(express.static(publicPath))
 app.get('/', (req, res) => {
-    res.sendFile('/src/views/index.html', {
-        root: __dirname
-    })
-})
-
-io.on('connection', (socket) => {
-    // ev.on('Authenticating', )
-    socket.emit('message', 'Connecting ...')
+    // res.sendFile('/src/views/index.html', {
+    //     root: __dirname
+    // })
+    
 
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
@@ -72,6 +68,11 @@ io.on('connection', (socket) => {
         }
     })
     
+})
+
+io.on('connection', (socket) => {
+    // ev.on('Authenticating', )
+    socket.emit('message', 'Connecting ...')
 })
 
 server.listen(port, () => {
