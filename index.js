@@ -13,41 +13,43 @@ const io = socketIo(server);
 const port = process.env.PORT || 8000;
 process.env.TZ = "Asia/Jakarta";
 
+
+create({
+    headless: true,
+    useChrome: true,
+    qrTimeout: 0,
+    authTimeout: 0,
+    chromiumArgs: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process', // <- this one doesn't works in Windows
+        '--disable-gpu'
+    ],
+    multiDevice: true
+}).then(client => start(client))
+.catch(error => console.log(error));
+
+function start(client) {
+    client.onMessage(async message => {
+        await msgHandler(client, message);
+    })
+
+    client.onMessageDeleted(async (message) => {
+        message.msgDelete = true
+        console.log(message);
+        await msgHandler(client, message)
+    })
+}
+
 // app.use(express.static(publicPath))
 app.get('/', (req, res) => {
     // res.sendFile('/src/views/index.html', {
     //     root: __dirname
     // })
-    create({
-        headless: true,
-        useChrome: true,
-        qrTimeout: 0,
-        authTimeout: 0,
-        chromiumArgs: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process', // <- this one doesn't works in Windows
-            '--disable-gpu'
-        ],
-        multiDevice: true
-    }).then(client => start(client))
-    .catch(error => console.log(error));
-    
-    function start(client) {
-        client.onMessage(async message => {
-            await msgHandler(client, message);
-        })
-    
-        client.onMessageDeleted(async (message) => {
-            message.msgDelete = true
-            console.log(message);
-            await msgHandler(client, message)
-        })
-    }
     
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
