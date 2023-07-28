@@ -20,14 +20,15 @@
   },
   "homepage": "https://github.com/Dhino12/wa-bot#readme",
   "dependencies": {
-    "@open-wa/wa-automate": "^4.47.4",
+    "@open-wa/wa-automate": "^4.66.3",
     "axios": "^0.27.2",
     "express": "^4.18.1",
-    "fluent-ffmpeg": "^2.1.2",
     "is-ci": "^3.0.1",
-    "nodemon": "^2.0.19",
     "remove.bg": "^1.3.0",
     "socket.io": "^4.5.1",
-    "ytdl-core": "^4.9.1"
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }

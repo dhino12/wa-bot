@@ -16,12 +16,15 @@ const axios = require('axios');
 const FormData = require('form-data');
 
 const { replaceAll, validateUrl } = require('./item/util');
-const { removeBg } = require('./item/removeBg');
+const { removeBg, removeBgColor } = require('./item/removeBg');
 const { desc, onlyCommands } = require('./item/commands');
 const { ytDownloader } = require('./item/ytDownloader');
 const { toMp3 } = require('./item/mp3Converter');
 
 const os = require('os');
+let forwardOfNumber = []
+let forwardOfMessageIds = []
+let fromSender = null
 
 const useragentOverride = 'WhatsApp/2.2029.4 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
@@ -40,10 +43,9 @@ const msgHandler = async (client, message) => {
         mentionedJidList,
         msgDelete,
         type,
+        chat,
         to
     } = message;
-
-    console.log(message);
 
     let grupId;
 
@@ -66,7 +68,7 @@ const msgHandler = async (client, message) => {
     // if (!caption.search('/') && !validateUrl(caption)) return;
 
     const commands = caption || body;
-    const command = commands.toLowerCase().split(' ')[0];
+    const command =  commands.toLowerCase().split(' ')[0];
     const arg = commands.split(' ')[1];
     const optionSize = commands.split(' ')[2]; // size video = 360p, 480p, 720p, 1080p / info video
     const optionInfo = commands.split(' ')[3]; // info video
@@ -143,7 +145,7 @@ const msgHandler = async (client, message) => {
             //     console.log('File sudah disimpan');
             // });
             break;
-
+            
         case onlyCommands['/removebg']: 
             try {
                 const outputFile = './media/image/noBg.png';
@@ -156,10 +158,14 @@ const msgHandler = async (client, message) => {
                         recursive: true
                     });
                 }
+                let resultRemoveBg = null
+                if (arg.toString()){
+                    resultRemoveBg = await removeBgColor({bufferBase64, bg_color: arg}, outputFile);
 
-                
-                const result = await removeBg(bufferBase64, outputFile);
-                bufferBase64 = `data:application/x-zip-compressed;base64,${result.base64img}`;
+                } else {
+                    resultRemoveBg = await removeBg(bufferBase64, outputFile);
+                }
+                bufferBase64 = `data:application/x-zip-compressed;base64,${resultRemoveBg.base64img}`;
                 // console.log(bufferBase64);
                 await client.sendFile(from, bufferBase64, 'foto-nobg.png', 'fotonya tuan' ,false, false, false, true);
                 

@@ -40,17 +40,15 @@ function start(client) {
 
     client.onMessageDeleted(async (message) => {
         message.msgDelete = true
-        console.log(message);
         await msgHandler(client, message)
     })
 }
 
 // app.use(express.static(publicPath))
 app.get('/', (req, res) => {
-    // res.sendFile('/src/views/index.html', {
-    //     root: __dirname
-    // })
-    
+    res.sendFile('/src/views/index.html', {
+        root: __dirname
+    })
 
     ev.on('qr.**', async (qr) => {
         //base64 encoded qr code image
@@ -76,5 +74,5 @@ io.on('connection', (socket) => {
 })
 
 server.listen(port, () => {
-    console.log('App Running on port : '+ port);
+    console.log('App Running on port : http://localhost:'+ port);
 })

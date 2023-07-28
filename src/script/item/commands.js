@@ -1,6 +1,5 @@
 const desc = {
     '/hi': 'katakan halo',
-    '/topdf': 'convert ke pdf',
     '/kick': 'Kick seseorang',
     '/mp3': 'Convert ke mp3',
     '/removebg': 'remove background',
@@ -9,6 +8,7 @@ const desc = {
     '/stiker-nobg': 'membuat stiker tanpa background',
     '/stiker-gif': 'membuat stiker dengan video',
     '/wa-ver': 'lihat versi whatsapp',
+    '/selesai': 'Selesai melakukan forward',
     '/yt': 'download video youtube',
     '/help': 'bantuan'
 }
