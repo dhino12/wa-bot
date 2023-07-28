@@ -9,7 +9,6 @@ const desc = {
     '/stiker-gif': 'membuat stiker dengan video',
     '/wa-ver': 'lihat versi whatsapp',
     '/selesai': 'Selesai melakukan forward',
-    '/yt': 'download video youtube',
     '/help': 'bantuan'
 }
 
