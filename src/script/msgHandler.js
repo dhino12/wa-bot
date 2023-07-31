@@ -159,7 +159,7 @@ const msgHandler = async (client, message) => {
                     });
                 }
                 let resultRemoveBg = null
-                if (arg.toString()){
+                if (typeof arg == 'string' && arg != ""){
                     resultRemoveBg = await removeBgColor({bufferBase64, bg_color: arg}, outputFile);
 
                 } else {
