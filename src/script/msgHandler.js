@@ -436,6 +436,7 @@ const msgHandler = async (client, message) => {
                 }, 60000);
                 return;
             }
+            
             await client.reply(from, checkWaktuSholat(), id);
             break;
 
