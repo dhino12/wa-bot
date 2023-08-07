@@ -1,18 +1,10 @@
-2023/08/07-21:15:12.133 457c Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2023/08/07-21:15:12.134 457c Recovering log #545
-2023/08/07-21:15:12.208 457c Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000545.log 
-2023/08/07-21:15:15.389 38cc Level-0 table #558: started
-2023/08/07-21:15:15.535 38cc Level-0 table #558: 1142646 bytes OK
-2023/08/07-21:15:15.597 38cc Delete type=0 #545
-2023/08/07-21:15:16.402 38cc Compacting 1@1 + 9@2 files
-2023/08/07-21:15:16.683 38cc Generated table #559@1: 89694 keys, 2241741 bytes
-2023/08/07-21:15:16.927 38cc Generated table #560@1: 96710 keys, 2249349 bytes
-2023/08/07-21:15:17.145 38cc Generated table #561@1: 90918 keys, 2285066 bytes
-2023/08/07-21:15:17.353 38cc Generated table #562@1: 4381 keys, 2156098 bytes
-2023/08/07-21:15:17.557 38cc Generated table #563@1: 2061 keys, 2162396 bytes
-2023/08/07-21:15:17.790 38cc Generated table #564@1: 12293 keys, 2196317 bytes
-2023/08/07-21:15:18.016 38cc Generated table #565@1: 17813 keys, 2204737 bytes
-2023/08/07-21:15:18.279 38cc Generated table #566@1: 99300 keys, 2248162 bytes
-2023/08/07-21:15:18.433 38cc Generated table #567@1: 41094 keys, 891938 bytes
-2023/08/07-21:15:18.434 38cc Compacted 1@1 + 9@2 files => 18635804 bytes
-2023/08/07-21:15:18.464 38cc compacted to: files[ 0 0 10 0 0 0 0 ]
+2023/08/07-21:46:42.068 420c Creating DB F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2023/08/07-21:46:42.181 420c Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/08/07-21:46:42.565 33b4 Level-0 table #5: started
+2023/08/07-21:46:42.658 33b4 Level-0 table #5: 7443 bytes OK
+2023/08/07-21:46:42.747 33b4 Delete type=0 #3
+2023/08/07-21:46:42.748 33b4 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/08/07-21:46:44.064 1a80 Level-0 table #7: started
+2023/08/07-21:46:44.153 1a80 Level-0 table #7: 20682 bytes OK
+2023/08/07-21:46:44.224 1a80 Delete type=0 #4
+2023/08/07-21:46:44.224 1a80 Manual compaction at level-0 from '\x00\x07\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at (end)
