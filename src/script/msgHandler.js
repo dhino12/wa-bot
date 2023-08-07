@@ -433,7 +433,7 @@ const msgHandler = async (client, message) => {
                 await client.reply(from, 'Pengingat sholat sudah dimulai..', id)
                 setInterval(async () => {
                     monitorPrayerTimes(sendText)
-                }, 6000);
+                }, 60000);
                 return;
             }
             await client.reply(from, checkWaktuSholat(), id);
