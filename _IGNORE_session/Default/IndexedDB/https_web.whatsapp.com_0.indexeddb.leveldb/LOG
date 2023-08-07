@@ -1,22 +1,13 @@
-2023/07/28-22:40:08.225 4168 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2023/07/28-22:40:08.226 4168 Recovering log #124
-2023/07/28-22:40:08.294 4168 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000124.log 
-2023/07/28-22:40:19.597 4168 Level-0 table #134: started
-2023/07/28-22:40:19.777 4168 Level-0 table #134: 1180933 bytes OK
-2023/07/28-22:40:19.809 4168 Delete type=0 #124
-2023/07/28-22:40:21.333 4168 Compacting 1@1 + 6@2 files
-2023/07/28-22:40:21.642 4168 Generated table #135@1: 48142 keys, 2208573 bytes
-2023/07/28-22:40:21.866 4168 Generated table #136@1: 2122 keys, 2153765 bytes
-2023/07/28-22:40:22.193 4168 Generated table #137@1: 2030 keys, 2152763 bytes
-2023/07/28-22:40:22.593 4168 Generated table #138@1: 24005 keys, 2252240 bytes
-2023/07/28-22:40:23.270 4168 Generated table #139@1: 66405 keys, 2206505 bytes
-2023/07/28-22:40:23.598 4168 Generated table #140@1: 73046 keys, 1568975 bytes
-2023/07/28-22:40:23.598 4168 Compacted 1@1 + 6@2 files => 12542821 bytes
-2023/07/28-22:40:23.664 4168 compacted to: files[ 0 0 6 0 0 0 0 ]
-2023/07/28-22:40:23.665 4168 Delete type=2 #126
-2023/07/28-22:40:23.665 4168 Delete type=2 #127
-2023/07/28-22:40:23.665 4168 Delete type=2 #128
-2023/07/28-22:40:23.665 4168 Delete type=2 #129
-2023/07/28-22:40:23.665 4168 Delete type=2 #130
-2023/07/28-22:40:23.665 4168 Delete type=2 #131
-2023/07/28-22:40:23.665 4168 Delete type=2 #134
+2023/08/07-21:15:58.159 446c Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/08/07-21:15:58.160 446c Recovering log #557
+2023/08/07-21:15:58.184 446c Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000557.log 
+2023/08/07-21:15:58.184 446c Delete type=2 #547
+2023/08/07-21:15:58.184 446c Delete type=2 #548
+2023/08/07-21:15:58.184 446c Delete type=2 #549
+2023/08/07-21:15:58.184 446c Delete type=2 #550
+2023/08/07-21:15:58.184 446c Delete type=2 #551
+2023/08/07-21:15:58.184 446c Delete type=2 #552
+2023/08/07-21:15:58.184 446c Delete type=2 #553
+2023/08/07-21:15:58.184 446c Delete type=2 #554
+2023/08/07-21:15:58.184 446c Delete type=2 #555
+2023/08/07-21:15:58.221 446c Delete type=2 #558

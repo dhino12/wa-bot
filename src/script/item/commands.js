@@ -6,8 +6,8 @@ const desc = {
     '/stiker': 'membuat stiker dengan gambar',
     '/stiker-nobg': 'membuat stiker tanpa background',
     '/stiker-gif': 'membuat stiker dengan video',
+    '/sholat': 'memulai pengingat sholat',
     '/wa-ver': 'lihat versi whatsapp',
-    '/selesai': 'Selesai melakukan forward',
     '/help': 'bantuan'
 }
 

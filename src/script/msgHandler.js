@@ -22,6 +22,7 @@ const { ytDownloader } = require('./item/ytDownloader');
 const { toMp3 } = require('./item/mp3Converter');
 
 const os = require('os');
+const { monitorPrayerTimes, updatePrayerTimesByCity, checkWaktuSholat } = require('./item/waktuSholat');
 let forwardOfNumber = []
 let forwardOfMessageIds = []
 let fromSender = null
@@ -49,6 +50,11 @@ const msgHandler = async (client, message) => {
 
     let grupId;
 
+    const sendText = (text) => {
+        console.log(text);
+        client.sendText(from, text)
+    }
+    
     if (msgDelete === true) {
         const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
         const msgRecovers = JSON.parse(file);
@@ -415,6 +421,22 @@ const msgHandler = async (client, message) => {
                     await client.sendFile(from, bufferBase64, 'videonya tuan', msgRecoverUser.caption);
                 }
             }
+            break;
+
+        case onlyCommands['/sholat']:
+            if (arg == "update") {
+                await updatePrayerTimesByCity()
+                return;
+            }
+
+            if (arg == "start") {
+                await client.reply(from, 'Pengingat sholat sudah dimulai..', id)
+                setInterval(async () => {
+                    monitorPrayerTimes(sendText)
+                }, 6000);
+                return;
+            }
+            await client.reply(from, checkWaktuSholat(), id);
             break;
 
         case onlyCommands['/help']:
