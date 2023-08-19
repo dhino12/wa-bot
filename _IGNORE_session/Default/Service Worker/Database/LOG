@@ -1,3 +1,2 @@
-2023/08/08-00:43:13.302 3d60 Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Service Worker\Database/MANIFEST-000001
-2023/08/08-00:43:13.303 3d60 Recovering log #3
-2023/08/08-00:43:13.303 3d60 Reusing old log F:\Project\wa-bot\_IGNORE_session\Default\Service Worker\Database/000003.log 
+2023/08/20-00:04:40.780 4dcc Creating DB F:\Project\wa-bot\_IGNORE_session\Default\Service Worker\Database since it was missing.
+2023/08/20-00:04:41.159 4dcc Reusing MANIFEST F:\Project\wa-bot\_IGNORE_session\Default\Service Worker\Database/MANIFEST-000001
