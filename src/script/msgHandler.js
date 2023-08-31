@@ -59,7 +59,6 @@ const msgHandler = async (client, message) => {
         const file = readFileSync('./src/script/lib/msgRecover.json', 'utf-8');
         const msgRecovers = JSON.parse(file);
 
-        console.log(msgRecovers);
         const date = new Date();
         message.time = `${date.getHours()}:${(date.getMinutes().toString().length === 1)? `0${date.getMinutes()}` : date.getMinutes()}`;
         message.date = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
@@ -110,7 +109,6 @@ const msgHandler = async (client, message) => {
                 })
             } else {
                 mediaData = await decryptMedia(dataMessage, useragentOverride);
-                console.log(mediaData.toString('base64'));
                 bufferBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`;
                 await client.sendImageAsSticker(from, bufferBase64, {
                     author: '',
@@ -378,7 +376,6 @@ const msgHandler = async (client, message) => {
                     const userGrupId = user.from.split('-')[1];
                     const userId = user.from.split('-')[0];
 
-                    console.log(user.time);
                     if (userGrupId === grupId && arg === user.time) {
                         // get by time example : 13:03 
                         return user
